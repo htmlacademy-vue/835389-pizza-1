@@ -8,14 +8,16 @@
             <h2 class="title title--small sheet__title">Выберите тесто</h2>
             <div class="sheet__content dough">
               <label
-                v-for="item in pizza.dough"
+                v-for="(item, i) in dough"
                 :key="item.id"
-                class="dough__input dough__input--light"
+                class="dough__input"
+                :class="`dough__input--${item.value}`"
               >
                 <input
                   type="radio"
                   name="dought"
-                  value="light"
+                  :value="item.value"
+                  :checked="i === 0"
                   class="visually-hidden"
                 />
                 <b>{{ item.name }}</b>
@@ -29,14 +31,16 @@
             <h2 class="title title--small sheet__title">Выберите размер</h2>
             <div class="sheet__content diameter">
               <label
-                v-for="size in pizza.sizes"
+                v-for="(size, i) in sizes"
                 :key="size.id"
-                class="diameter__input diameter__input--small"
+                class="diameter__input"
+                :class="`diameter__input--${size.value}`"
               >
                 <input
                   type="radio"
                   name="diameter"
-                  value="small"
+                  :value="size.value"
+                  :checked="i === 0"
                   class="visually-hidden"
                 />
                 <span>{{ size.name }}</span>
@@ -54,11 +58,16 @@
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
                 <label
-                  v-for="sauce in pizza.sauces"
+                  v-for="(sauce, i) in sauces"
                   :key="sauce.id"
                   class="radio ingredients__input"
                 >
-                  <input type="radio" name="sauce" value="tomato" />
+                  <input
+                    type="radio"
+                    name="sauce"
+                    :value="sauce.value"
+                    :checked="i === 0"
+                  />
                   <span>{{ sauce.name }}</span>
                 </label>
               </div>
@@ -67,11 +76,14 @@
 
                 <ul class="ingredients__list">
                   <li
-                    v-for="ingredient in pizza.ingredients"
+                    v-for="ingredient in ingredients"
                     :key="ingredient.id"
                     class="ingredients__item"
                   >
-                    <span class="filling filling--mushrooms">
+                    <span
+                      class="filling"
+                      :class="`filling--${ingredient.value}`"
+                    >
                       {{ ingredient.name }}
                     </span>
 
@@ -137,6 +149,11 @@
 import pizza from "../static/pizza.json";
 import user from "../static/user.json";
 import misc from "../static/misc.json";
+import { PIZZA_DOUGH } from "../common/constants";
+import { PIZZA_INGREDIENTS } from "../common/constants";
+import { PIZZA_SAUSES } from "../common/constants";
+import { PIZZA_SIZES } from "../common/constants";
+import { normalizePizza } from "../common/helpers";
 export default {
   name: "Index",
   data() {
@@ -145,6 +162,24 @@ export default {
       user: user,
       misc: misc,
     };
+  },
+  computed: {
+    dough() {
+      return this.pizza.dough.map((item) => normalizePizza(item, PIZZA_DOUGH));
+    },
+    ingredients() {
+      return this.pizza.ingredients.map((item) =>
+        normalizePizza(item, PIZZA_INGREDIENTS)
+      );
+    },
+    sauces() {
+      return this.pizza.sauces.map((item) =>
+        normalizePizza(item, PIZZA_SAUSES)
+      );
+    },
+    sizes() {
+      return this.pizza.sizes.map((item) => normalizePizza(item, PIZZA_SIZES));
+    },
   },
 };
 </script>
