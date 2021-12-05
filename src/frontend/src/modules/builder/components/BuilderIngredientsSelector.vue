@@ -5,19 +5,15 @@
       <div class="sheet__content ingredients">
         <div class="ingredients__sauce">
           <p>Основной соус:</p>
-          <label
+          <RadioButton
             v-for="(sauce, i) in sauces"
             :key="sauce.id"
-            class="radio ingredients__input"
-          >
-            <input
-              type="radio"
-              name="sauce"
-              :value="sauce.value"
-              :checked="i === 0"
-            />
-            <span>{{ sauce.name }}</span>
-          </label>
+            :input="sauce"
+            :class-name="'radio ingredients__input'"
+            :name="'sauce'"
+            @change="changeSauce"
+            :checked="i === 0"
+          />
         </div>
         <div class="ingredients__filling">
           <p>Начинка:</p>
@@ -28,7 +24,11 @@
               class="ingredients__item"
             >
               <SelectorItem :item="ingredient" />
-              <ItemCounter :count="ingredient.count" />
+              <ItemCounter
+                :count="ingredient.count"
+                :id="ingredient.id"
+                @change-count="changeIngredient"
+              />
             </li>
           </ul>
         </div>
@@ -40,9 +40,11 @@
 <script>
 import ItemCounter from "../../../common/components/ItemCounter";
 import SelectorItem from "../../../common/components/SelectorItem";
+import RadioButton from "../../../common/components/RadioButton";
 export default {
   name: "BuilderIngredientsSelector",
   components: {
+    RadioButton,
     SelectorItem,
     ItemCounter,
   },
@@ -58,6 +60,14 @@ export default {
       default() {
         return [];
       },
+    },
+  },
+  methods: {
+    changeSauce(id) {
+      this.$emit("change-sauce", id);
+    },
+    changeIngredient(id, count) {
+      this.$emit("change-ingredient", id, count);
     },
   },
 };

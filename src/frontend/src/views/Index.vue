@@ -3,13 +3,20 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <BuilderDoughSelector :dough="dough" />
-        <BuilderSizeSelector :sizes="sizes" />
+        <BuilderDoughSelector :dough="dough" @change-dough="changeDough" />
+        <BuilderSizeSelector :sizes="sizes" @change-size="changeSize" />
         <BuilderIngredientsSelector
           :sauces="sauces"
           :ingredients="ingredients"
+          @change-sauce="changeSauce"
+          @change-ingredient="changeIngredients"
         />
-        <BuilderPizzaView @change-ingredient="changeIngredients" />
+        <BuilderPizzaView
+          :price="price"
+          :current-pizza="currentPizza"
+          :ingredients="ingredients"
+          @change-ingredient="changeIngredients"
+        />
       </div>
     </form>
   </main>
@@ -19,15 +26,18 @@
 import pizza from "../static/pizza.json";
 import user from "../static/user.json";
 import misc from "../static/misc.json";
-import { PIZZA_DOUGH } from "../common/constants";
-import { PIZZA_INGREDIENTS } from "../common/constants";
-import { PIZZA_SAUSES } from "../common/constants";
-import { PIZZA_SIZES } from "../common/constants";
+import {
+  PIZZA_DOUGH,
+  PIZZA_INGREDIENTS,
+  PIZZA_SAUSES,
+  PIZZA_SIZES,
+} from "../common/constants";
 import { normalizePizza } from "../common/helpers";
 import BuilderDoughSelector from "../modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "../modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "../modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "../modules/builder/components/BuilderPizzaView";
+
 export default {
   name: "Index",
   data() {
@@ -35,6 +45,11 @@ export default {
       pizza: pizza,
       user: user,
       misc: misc,
+      currentPizza: {
+        dough: {},
+        size: {},
+        sauce: {},
+      },
     };
   },
   computed: {
@@ -54,6 +69,17 @@ export default {
     sizes() {
       return this.pizza.sizes.map((item) => normalizePizza(item, PIZZA_SIZES));
     },
+    price() {
+      const dough_price = this.currentPizza.dough.price;
+      const multiplier = this.currentPizza.size.multiplier;
+      const sauces_price = this.currentPizza.sauce.price;
+      const ingredients_price = this.ingredients
+        .filter((item) => item.count && item.count > 0)
+        .reduce((sum, item) => {
+          return sum + item.count * item.price;
+        }, 0);
+      return multiplier * (dough_price + sauces_price + ingredients_price);
+    },
   },
   methods: {
     changeIngredients(id, count) {
@@ -64,6 +90,20 @@ export default {
         return item;
       });
     },
+    changeDough(id) {
+      this.currentPizza.dough = this.dough.find((item) => item.id === id);
+    },
+    changeSize(id) {
+      this.currentPizza.size = this.sizes.find((item) => item.id === id);
+    },
+    changeSauce(id) {
+      this.currentPizza.sauce = this.sauces.find((item) => item.id === id);
+    },
+  },
+  created() {
+    this.currentPizza.dough = this.dough[0];
+    this.currentPizza.size = this.sizes[0];
+    this.currentPizza.sauce = this.sauces[0];
   },
   components: {
     BuilderPizzaView,

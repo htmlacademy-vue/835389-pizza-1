@@ -7,9 +7,10 @@
           v-for="(size, i) in sizes"
           :key="size.id"
           :input="size"
-          :checked="i === 0"
+          @change="changeSize"
           :class-name="`diameter__input diameter__input--${size.value}`"
           :name="'diameter'"
+          :checked="i === 0"
         />
       </div>
     </div>
@@ -29,6 +30,11 @@ export default {
       default() {
         return [];
       },
+    },
+  },
+  methods: {
+    changeSize(id) {
+      this.$emit("change-size", id);
     },
   },
 };

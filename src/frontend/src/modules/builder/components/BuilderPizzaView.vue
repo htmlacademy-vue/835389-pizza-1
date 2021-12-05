@@ -15,17 +15,26 @@
       @dragover.prevent
       @dragenter.prevent
     >
-      <div class="pizza pizza--foundation--big-tomato">
+      <div class="pizza" :class="pizzaClass">
         <div class="pizza__wrapper">
-          <div class="pizza__filling pizza__filling--ananas"></div>
-          <div class="pizza__filling pizza__filling--bacon"></div>
-          <div class="pizza__filling pizza__filling--cheddar"></div>
+          <template v-for="ingredient in ingredients">
+            <div
+              v-if="ingredient.count > 0"
+              :key="ingredient.id"
+              class="pizza__filling"
+              :class="[
+                `pizza__filling--${ingredient.value}`,
+                ingredient.count === 2 ? 'pizza__filling--second' : '',
+                ingredient.count === 3 ? 'pizza__filling--third' : '',
+              ]"
+            ></div>
+          </template>
         </div>
       </div>
     </div>
 
     <div class="content__result">
-      <p>Итого: 0 ₽</p>
+      <p>Итого: {{ formattedPrice }} ₽</p>
       <button type="button" class="button" disabled>Готовьте!</button>
     </div>
   </div>
@@ -33,8 +42,40 @@
 
 <script>
 import { DATA_TRANSFER_PAYLOAD } from "../../../common/constants";
+import { formattedPrice } from "../../../common/helpers";
+
 export default {
   name: "BuilderPizzaView",
+  props: {
+    price: {
+      type: Number,
+      default() {
+        return 0;
+      },
+    },
+    currentPizza: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    ingredients: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+  computed: {
+    pizzaClass() {
+      return `pizza--foundation--${
+        this.currentPizza.dough.value === "light" ? "small" : "big"
+      }-${this.currentPizza.sauce.value}`;
+    },
+    formattedPrice() {
+      return formattedPrice(this.price);
+    },
+  },
   methods: {
     onDrop({ dataTransfer }) {
       if (!dataTransfer) {

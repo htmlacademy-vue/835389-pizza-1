@@ -6,10 +6,11 @@
         <RadioButton
           v-for="(item, i) in dough"
           :key="item.id"
+          @change="changeDough"
           :class-name="`dough__input dough__input--${item.value}`"
           :name="'dought'"
-          :checked="i === 0"
           :input="item"
+          :checked="i === 0"
         />
       </div>
     </div>
@@ -29,6 +30,11 @@ export default {
       default() {
         return [];
       },
+    },
+  },
+  methods: {
+    changeDough(item) {
+      this.$emit("change-dough", item);
     },
   },
 };

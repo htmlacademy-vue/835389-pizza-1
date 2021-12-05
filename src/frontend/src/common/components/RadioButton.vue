@@ -5,6 +5,7 @@
       :name="name"
       :value="input.value"
       :checked="checked"
+      @change="$emit('change', input.id)"
       class="visually-hidden"
     />
     <template v-if="input.description">
@@ -25,12 +26,6 @@ export default {
         return {};
       },
     },
-    checked: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
     className: {
       type: String,
       default() {
@@ -41,6 +36,12 @@ export default {
       type: String,
       default() {
         return "";
+      },
+    },
+    checked: {
+      type: Boolean,
+      default() {
+        return false;
       },
     },
   },
