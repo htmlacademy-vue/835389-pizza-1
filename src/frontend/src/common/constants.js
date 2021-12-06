@@ -97,3 +97,6 @@ export const PIZZA_SIZES = [
     value: "large",
   },
 ];
+
+export const MOVE = "move";
+export const DATA_TRANSFER_PAYLOAD = "payload";
