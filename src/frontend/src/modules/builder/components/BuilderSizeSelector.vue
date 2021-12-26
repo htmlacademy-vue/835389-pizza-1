@@ -4,13 +4,13 @@
       <h2 class="title title--small sheet__title">Выберите размер</h2>
       <div class="sheet__content diameter">
         <RadioButton
-          v-for="(size, i) in sizes"
+          v-for="size in sizes"
           :key="size.id"
           :input="size"
           @change="changeSize"
           :class-name="`diameter__input diameter__input--${size.value}`"
           :name="'diameter'"
-          :checked="i === 0"
+          :checked="size.id === current"
         />
       </div>
     </div>
@@ -29,6 +29,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    current: {
+      type: Number,
+      default() {
+        return 0;
       },
     },
   },

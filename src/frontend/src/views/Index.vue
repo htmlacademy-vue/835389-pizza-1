@@ -3,11 +3,20 @@
     <form action="#" method="post">
       <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
-        <BuilderDoughSelector :dough="dough" @change-dough="changeDough" />
-        <BuilderSizeSelector :sizes="sizes" @change-size="changeSize" />
+        <BuilderDoughSelector
+          :dough="dough"
+          :current="currentPizza.dough.id"
+          @change-dough="changeDough"
+        />
+        <BuilderSizeSelector
+          :sizes="sizes"
+          :current="currentPizza.size.id"
+          @change-size="changeSize"
+        />
         <BuilderIngredientsSelector
           :sauces="sauces"
           :ingredients="ingredients"
+          :current="currentPizza.sauce.id"
           @change-sauce="changeSauce"
           @change-ingredient="changeIngredients"
         />
@@ -69,16 +78,19 @@ export default {
     sizes() {
       return this.pizza.sizes.map((item) => normalizePizza(item, PIZZA_SIZES));
     },
-    price() {
-      const dough_price = this.currentPizza.dough.price;
-      const multiplier = this.currentPizza.size.multiplier;
-      const sauces_price = this.currentPizza.sauce.price;
+    priceIngredients() {
       const ingredients_price = this.ingredients
         .filter((item) => item.count && item.count > 0)
         .reduce((sum, item) => {
           return sum + item.count * item.price;
         }, 0);
-      return multiplier * (dough_price + sauces_price + ingredients_price);
+      return ingredients_price;
+    },
+    price() {
+      const dough_price = this.currentPizza.dough.price;
+      const multiplier = this.currentPizza.size.multiplier;
+      const sauces_price = this.currentPizza.sauce.price;
+      return multiplier * (dough_price + sauces_price + this.priceIngredients);
     },
   },
   methods: {

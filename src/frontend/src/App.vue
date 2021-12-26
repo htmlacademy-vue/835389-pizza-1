@@ -1,15 +1,19 @@
 <template>
   <div id="app">
-    <AppLayout />
+    <component :is="layout">
+      <router-view />
+    </component>
   </div>
 </template>
 
 <script>
-import AppLayout from "./layouts/AppLayout";
 export default {
   name: "App",
-  components: {
-    AppLayout,
+  computed: {
+    layout: function () {
+      const layout = this.$route.meta.layout;
+      return () => import(`@/layouts/${layout}.vue`);
+    },
   },
 };
 </script>
