@@ -2,7 +2,7 @@
   <span
     class="filling"
     :class="`filling--${item.value}`"
-    draggable="true"
+    :draggable="isDraggable"
     @dragstart.self="onDrag"
     @dragover.prevent
     @dragenter.prevent
@@ -21,6 +21,11 @@ export default {
       default() {
         return {};
       },
+    },
+  },
+  computed: {
+    isDraggable() {
+      return !this.item.count || (this.item.count && this.item.count < 3);
     },
   },
   methods: {

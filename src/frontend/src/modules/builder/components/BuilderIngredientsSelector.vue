@@ -6,13 +6,13 @@
         <div class="ingredients__sauce">
           <p>Основной соус:</p>
           <RadioButton
-            v-for="(sauce, i) in sauces"
+            v-for="sauce in sauces"
             :key="sauce.id"
             :input="sauce"
             :class-name="'radio ingredients__input'"
             :name="'sauce'"
             @change="changeSauce"
-            :checked="i === 0"
+            :checked="sauce.id === current"
           />
         </div>
         <div class="ingredients__filling">
@@ -53,6 +53,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    current: {
+      type: Number,
+      default() {
+        return 0;
       },
     },
     ingredients: {
