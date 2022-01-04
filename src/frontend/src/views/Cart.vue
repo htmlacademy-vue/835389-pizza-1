@@ -295,6 +295,17 @@ export default {
     },
     submitOrder() {
       this.$store.dispatch("Cart/deleteCart");
+      let product = {
+        dough: this.pizza.dough[0],
+        size: this.pizza.sizes[0],
+        sauce: this.pizza.sauces[0],
+        ingredients: [],
+        name: "",
+        qty: 1,
+        price: 0,
+        id: uniqueId(),
+      };
+      this.$store.dispatch("Builder/setPizza", product);
       this.isModalOrder = true;
     },
   },
