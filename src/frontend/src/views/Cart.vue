@@ -1,5 +1,17 @@
 <template>
-  <form action="test.html" method="post" class="layout-form">
+  <form class="layout-form" @submit.prevent="submitOrder">
+    <div class="popup" v-if="isModalOrder">
+      <a href="#" class="close" @click.prevent="isModalOrder = !isModalOrder">
+        <span class="visually-hidden">Закрыть попап</span>
+      </a>
+      <div class="popup__title">
+        <h2 class="title">Спасибо за заказ</h2>
+      </div>
+      <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
+      <div class="popup__button">
+        <a href="#" class="button">Отлично, я жду!</a>
+      </div>
+    </div>
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -23,7 +35,7 @@
                   class="product__img"
                   width="56"
                   height="56"
-                  alt="Любимая пицца"
+                  :alt="product.name"
                 />
                 <div class="product__text">
                   <h2>{{ product.name }}</h2>
@@ -229,6 +241,7 @@ export default {
       address: "",
       house: "",
       apartment: "",
+      isModalOrder: false,
     };
   },
   computed: {
@@ -279,6 +292,10 @@ export default {
     decrement(product) {
       product.qty = product.qty - 1;
       this.$store.dispatch("Cart/changeCart", product);
+    },
+    submitOrder() {
+      this.$store.dispatch("Cart/deleteCart");
+      this.isModalOrder = true;
     },
   },
 };

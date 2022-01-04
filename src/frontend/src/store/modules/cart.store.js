@@ -12,7 +12,6 @@ export default {
     }),
   },
   mutations: {
-    //изменяет state
     ADD_CART(state, item) {
       let index = state.cartItems.findIndex((el) => el.id === item.id);
       if (index === -1) {
@@ -53,9 +52,15 @@ export default {
         return sum + item.qty * item.price;
       }, 0);
     },
+    deleteCart(state) {
+      state.cartItems = [];
+      state.cartPrice = 0;
+      state.misc = misc.map((el) => {
+        return normalizeMisc(el);
+      });
+    },
   },
   actions: {
-    //вызывает мутации
     addCart({ commit }, items) {
       commit("ADD_CART", items);
     },
@@ -64,6 +69,9 @@ export default {
     },
     changeMisc({ commit }, item) {
       commit("changeMisc", item);
+    },
+    deleteCart({ commit }) {
+      commit("deleteCart");
     },
   },
   getters: {
