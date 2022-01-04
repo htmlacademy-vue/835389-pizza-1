@@ -9,7 +9,9 @@
       </div>
       <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
       <div class="popup__button">
-        <a href="#" class="button">Отлично, я жду!</a>
+        <a href="#" class="button" @click.prevent="isModalOrder = !isModalOrder"
+          >Отлично, я жду!</a
+        >
       </div>
     </div>
     <main class="content cart">
@@ -25,8 +27,8 @@
         <template v-else>
           <ul class="cart-list sheet">
             <li
-              v-for="(product, i) in cartItems"
-              :key="i"
+              v-for="product in cartItems"
+              :key="product.id"
               class="cart-list__item"
             >
               <div class="product cart-list__product">
@@ -41,19 +43,12 @@
                   <h2>{{ product.name }}</h2>
                   <ul>
                     <li>
-                      {{ product.size.name }},
-                      {{
-                        product.dough.value === "large"
-                          ? "на толстом тесте"
-                          : "на тонком тесте"
-                      }}
+                      {{ product.sizes.name }},
+                      {{ productDough(product.dough.value) }}
                     </li>
-                    <li>Соус: {{ product.sauce.name }}</li>
+                    <li>Соус: {{ product.sauces.name }}</li>
                     <li>
-                      Начинка:
-                      <template v-for="ingredient in product.ingredients">
-                        {{ ingredient.name }},
-                      </template>
+                      Начинка: {{ productIngredients(product.ingredients) }}
                     </li>
                   </ul>
                 </div>
@@ -87,7 +82,7 @@
               </div>
 
               <div class="cart-list__price">
-                <b>{{ (product.price * product.qty) | formattedPrice }} ₽</b>
+                <b>{{ formattedPrice(product.price * product.qty) }} ₽</b>
               </div>
 
               <div class="cart-list__button">
@@ -120,7 +115,7 @@
                       type="button"
                       class="counter__button counter__button--minus"
                       :disabled="el.qty < 1"
-                      @click="changeMisc(el, el.qty - 1)"
+                      @click="changeMisc(el.id, el.qty - 1)"
                     >
                       <span class="visually-hidden">Меньше</span>
                     </button>
@@ -138,7 +133,7 @@
                         counter__button--plus
                         counter__button--orange
                       "
-                      @click="changeMisc(el, el.qty + 1)"
+                      @click="changeMisc(el.id, el.qty + 1)"
                     >
                       <span class="visually-hidden">Больше</span>
                     </button>
@@ -217,7 +212,7 @@
         Перейти к конструктору<br />чтоб собрать ещё одну пиццу
       </p>
       <div class="footer__price">
-        <b>Итого: {{ price | formattedPrice }} ₽</b>
+        <b>Итого: {{ formattedPrice(price) }} ₽</b>
       </div>
 
       <div class="footer__submit">
@@ -256,22 +251,27 @@ export default {
       price: "price",
     }),
   },
-  filters: {
-    formattedPrice,
-  },
   methods: {
-    changeMisc(el, count) {
-      if (count >= 0) {
-        let item = el;
-        item.qty = count;
-        this.$store.dispatch("Cart/changeMisc", item);
+    formattedPrice(price) {
+      return formattedPrice(price);
+    },
+    productDough(value) {
+      return value === "large" ? "на толстом тесте" : "на тонком тесте";
+    },
+    productIngredients(items) {
+      let ingredients = items.map((item) => item.name);
+      return ingredients.join(", ");
+    },
+    changeMisc(id, qty) {
+      if (qty >= 0) {
+        this.$store.dispatch("Cart/changeMisc", { id, qty });
       }
     },
     newPizza() {
       let product = {
         dough: this.pizza.dough[0],
-        size: this.pizza.sizes[0],
-        sauce: this.pizza.sauces[0],
+        sizes: this.pizza.sizes[0],
+        sauces: this.pizza.sauces[0],
         ingredients: [],
         name: "",
         qty: 1,
@@ -297,8 +297,8 @@ export default {
       this.$store.dispatch("Cart/deleteCart");
       let product = {
         dough: this.pizza.dough[0],
-        size: this.pizza.sizes[0],
-        sauce: this.pizza.sauces[0],
+        sizes: this.pizza.sizes[0],
+        sauces: this.pizza.sauces[0],
         ingredients: [],
         name: "",
         qty: 1,

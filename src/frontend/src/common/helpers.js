@@ -1,8 +1,16 @@
-export const normalizePizza = (property, arr) => {
-  return {
-    ...property,
-    value: arr.find((item) => item.name === property.name).value,
-  };
+export const normalizePizza = (property, arr, type) => {
+  if (type && type === "ingredients") {
+    return {
+      ...property,
+      value: arr.find((item) => item.name === property.name).value,
+      count: 0,
+    };
+  } else {
+    return {
+      ...property,
+      value: arr.find((item) => item.name === property.name).value,
+    };
+  }
 };
 
 export const formattedPrice = (price) => {

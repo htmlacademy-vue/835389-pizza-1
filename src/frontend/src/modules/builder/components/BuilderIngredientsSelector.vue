@@ -6,21 +6,21 @@
         <div class="ingredients__sauce">
           <p>Основной соус:</p>
           <RadioButton
-            v-for="sauce in sauces"
-            :key="sauce.id"
+            v-for="sauce in pizza.sauces"
+            :key="`sauce-${sauce.id}`"
             :input="sauce"
             :class-name="'radio ingredients__input'"
-            :name="'sauce'"
+            name="sauce"
             @change="changeSauce"
-            :checked="sauce.id === current"
+            :checked="sauce.id === currentPizza.sauces.id"
           />
         </div>
         <div class="ingredients__filling">
           <p>Начинка:</p>
           <ul class="ingredients__list">
             <li
-              v-for="ingredient in ingredients"
-              :key="ingredient.id"
+              v-for="ingredient in pizza.ingredients"
+              :key="`ingredient-${ingredient.id}`"
               class="ingredients__item"
             >
               <SelectorItem :item="ingredient" />
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import ItemCounter from "../../../common/components/ItemCounter";
 import SelectorItem from "../../../common/components/SelectorItem";
 import RadioButton from "../../../common/components/RadioButton";
@@ -48,32 +49,18 @@ export default {
     SelectorItem,
     ItemCounter,
   },
-  props: {
-    sauces: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    current: {
-      type: Number,
-      default() {
-        return 0;
-      },
-    },
-    ingredients: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
+  computed: {
+    ...mapState("Builder", {
+      pizza: "pizza",
+      currentPizza: "currentPizza",
+    }),
   },
   methods: {
     changeSauce(id) {
-      this.$emit("change-sauce", id);
+      this.$store.dispatch("Builder/changePizza", { name: "sauces", id });
     },
     changeIngredient(id, count) {
-      this.$emit("change-ingredient", id, count);
+      this.$store.dispatch("Builder/changeIngredients", { id, count });
     },
   },
 };

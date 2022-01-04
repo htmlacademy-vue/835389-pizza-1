@@ -10,7 +10,7 @@
 export default {
   name: "App",
   computed: {
-    layout: function () {
+    layout() {
       const layout = this.$route.meta.layout;
       return () => import(`@/layouts/${layout}.vue`);
     },

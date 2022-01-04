@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart">{{ price | formattedPrice }} ₽</router-link>
+      <router-link to="/cart">{{ formattedPrice }} ₽</router-link>
     </div>
     <div class="header__user">
       <router-link to="/login" class="header__login">
@@ -34,9 +34,9 @@ export default {
     ...mapState("Auth", {
       user: "user",
     }),
-  },
-  filters: {
-    formattedPrice,
+    formattedPrice() {
+      return formattedPrice(this.price);
+    },
   },
 };
 </script>

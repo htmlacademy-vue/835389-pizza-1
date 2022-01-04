@@ -5,7 +5,8 @@
       <input
         type="text"
         name="pizza_name"
-        v-model="currentPizza.name"
+        @input="changeName($event.target.value)"
+        :value="currentPizza.name"
         placeholder="Введите название пиццы"
       />
     </label>
@@ -18,9 +19,8 @@
     >
       <div class="pizza" :class="pizzaClass">
         <div class="pizza__wrapper">
-          <template v-for="ingredient in ingredients">
+          <template v-for="ingredient in currentPizza.ingredients">
             <div
-              v-if="ingredient.count > 0"
               :key="ingredient.id"
               class="pizza__filling"
               :class="[
@@ -35,7 +35,7 @@
     </div>
 
     <div class="content__result">
-      <p>Итого: {{ currentPizza.price | formattedPrice }} ₽</p>
+      <p>Итого: {{ formattedPrice }} ₽</p>
       <button
         type="button"
         class="button"
@@ -49,36 +49,31 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 import { DATA_TRANSFER_PAYLOAD } from "../../../common/constants";
 import { formattedPrice } from "../../../common/helpers";
 
 export default {
   name: "BuilderPizzaView",
-  props: {
-    currentPizza: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    ingredients: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-  },
-  filters: {
-    formattedPrice,
-  },
   computed: {
+    ...mapGetters("Builder", {
+      pizzaPrice: "pizzaPrice",
+    }),
+    ...mapState("Builder", {
+      currentPizza: "currentPizza",
+    }),
+    formattedPrice() {
+      return formattedPrice(this.pizzaPrice);
+    },
     isDisabled() {
-      return !this.currentPizza.name.length;
+      return (
+        !this.currentPizza.name.length || !this.currentPizza.ingredients.length
+      );
     },
     pizzaClass() {
       return `pizza--foundation--${
         this.currentPizza.dough.value === "light" ? "small" : "big"
-      }-${this.currentPizza.sauce.value}`;
+      }-${this.currentPizza.sauces.value}`;
     },
   },
   methods: {
@@ -103,7 +98,10 @@ export default {
       this.setIngredient(ingredient.id, count);
     },
     setIngredient(id, count) {
-      this.$emit("change-ingredient", id, count);
+      this.$store.dispatch("Builder/changeIngredients", { id, count });
+    },
+    changeName(name) {
+      this.$store.dispatch("Builder/changePizzaName", name);
     },
   },
 };
