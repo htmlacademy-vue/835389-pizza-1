@@ -5,6 +5,7 @@
       <input
         type="text"
         name="pizza_name"
+        v-model="currentPizza.name"
         placeholder="Введите название пиццы"
       />
     </label>
@@ -34,8 +35,15 @@
     </div>
 
     <div class="content__result">
-      <p>Итого: {{ formattedPrice }} ₽</p>
-      <button type="button" class="button" disabled>Готовьте!</button>
+      <p>Итого: {{ currentPizza.price | formattedPrice }} ₽</p>
+      <button
+        type="button"
+        class="button"
+        :disabled="isDisabled"
+        @click="setCart"
+      >
+        Готовьте!
+      </button>
     </div>
   </div>
 </template>
@@ -47,12 +55,6 @@ import { formattedPrice } from "../../../common/helpers";
 export default {
   name: "BuilderPizzaView",
   props: {
-    price: {
-      type: Number,
-      default() {
-        return 0;
-      },
-    },
     currentPizza: {
       type: Object,
       default() {
@@ -66,17 +68,24 @@ export default {
       },
     },
   },
+  filters: {
+    formattedPrice,
+  },
   computed: {
+    isDisabled() {
+      return !this.currentPizza.name.length;
+    },
     pizzaClass() {
       return `pizza--foundation--${
         this.currentPizza.dough.value === "light" ? "small" : "big"
       }-${this.currentPizza.sauce.value}`;
     },
-    formattedPrice() {
-      return formattedPrice(this.price);
-    },
   },
   methods: {
+    setCart() {
+      this.$store.dispatch("Cart/addCart", this.currentPizza);
+      this.$router.push("/cart");
+    },
     onDrop({ dataTransfer }) {
       if (!dataTransfer) {
         return;

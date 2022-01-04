@@ -11,3 +11,10 @@ export const formattedPrice = (price) => {
 
   return price;
 };
+
+export const normalizeMisc = (property) => {
+  return {
+    ...property,
+    qty: 0,
+  };
+};
