@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart">0 ₽</router-link>
+      <router-link to="/cart">{{ formattedPrice }} ₽</router-link>
     </div>
     <div class="header__user">
       <router-link to="/login" class="header__login">
@@ -22,7 +22,21 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
+import { formattedPrice } from "../common/helpers";
+
 export default {
   name: "AppLayoutHeader",
+  computed: {
+    ...mapGetters("Cart", {
+      price: "price",
+    }),
+    ...mapState("Auth", {
+      user: "user",
+    }),
+    formattedPrice() {
+      return formattedPrice(this.price);
+    },
+  },
 };
 </script>

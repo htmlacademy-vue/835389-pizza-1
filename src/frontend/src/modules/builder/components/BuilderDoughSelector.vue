@@ -4,13 +4,13 @@
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
       <div class="sheet__content dough">
         <RadioButton
-          v-for="item in dough"
+          v-for="item in pizza.dough"
           :key="item.id"
           @change="changeDough"
           :class-name="`dough__input dough__input--${item.value}`"
-          :name="'dought'"
+          name="dought"
           :input="item"
-          :checked="item.id === current"
+          :checked="item.id === currentPizza.dough.id"
         />
       </div>
     </div>
@@ -18,29 +18,22 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import RadioButton from "../../../common/components/RadioButton";
 export default {
   name: "BuilderDoughSelector",
   components: {
     RadioButton,
   },
-  props: {
-    dough: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    current: {
-      type: Number,
-      default() {
-        return 0;
-      },
-    },
+  computed: {
+    ...mapState("Builder", {
+      pizza: "pizza",
+      currentPizza: "currentPizza",
+    }),
   },
   methods: {
-    changeDough(item) {
-      this.$emit("change-dough", item);
+    changeDough(id) {
+      this.$store.dispatch("Builder/changePizza", { name: "dough", id });
     },
   },
 };
