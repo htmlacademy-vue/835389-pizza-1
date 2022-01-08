@@ -1,35 +1,25 @@
-import pizza from "../../static/pizza.json";
-
-import {
-  PIZZA_DOUGH,
-  PIZZA_INGREDIENTS,
-  PIZZA_SAUSES,
-  PIZZA_SIZES,
-} from "../../common/constants";
-import { normalizePizza } from "../../common/helpers";
 import { uniqueId } from "lodash";
 import {
   SET_PIZZA,
   CHANGE_PIZZA,
   CHANGE_INGREDIENTS,
   CHANGE_PIZZA_NAME,
+  SET_BUILDER,
 } from "../mutation-types";
 
 export default {
   namespaced: true,
   state: {
     pizza: {
-      dough: pizza.dough.map((item) => normalizePizza(item, PIZZA_DOUGH)),
-      sizes: pizza.sizes.map((item) => normalizePizza(item, PIZZA_SIZES)),
-      sauces: pizza.sauces.map((item) => normalizePizza(item, PIZZA_SAUSES)),
-      ingredients: pizza.ingredients.map((item) =>
-        normalizePizza(item, PIZZA_INGREDIENTS, "ingredients")
-      ),
+      dough: [],
+      sizes: [],
+      sauces: [],
+      ingredients: [],
     },
     currentPizza: {
-      dough: normalizePizza(pizza.dough[0], PIZZA_DOUGH),
-      sizes: normalizePizza(pizza.sizes[0], PIZZA_SIZES),
-      sauces: normalizePizza(pizza.sauces[0], PIZZA_SAUSES),
+      dough: {},
+      sizes: {},
+      sauces: {},
       ingredients: [],
       name: "",
       qty: 1,
@@ -41,7 +31,6 @@ export default {
       state.currentPizza = product;
       state.pizza.ingredients = state.pizza.ingredients.map((item) => {
         if (product.ingredients.length > 0) {
-          console.log(product.ingredients.length);
           let ingredient = product.ingredients.findIndex(
             (el) => el.id === item.id
           );
@@ -77,8 +66,36 @@ export default {
     [CHANGE_PIZZA_NAME](state, name) {
       state.currentPizza.name = name;
     },
+    [SET_BUILDER](state, data) {
+      state.pizza[data.type] = data.property;
+      if (data.type !== "ingredients") {
+        state.currentPizza[data.type] = data.property[0];
+      }
+    },
   },
   actions: {
+    async getDough({ commit }) {
+      const list = await this.$api.dough.getList();
+      commit("SET_BUILDER", { type: "dough", property: list });
+    },
+    async getSizes({ commit }) {
+      const list = await this.$api.sizes.getList();
+      commit("SET_BUILDER", { type: "sizes", property: list });
+    },
+    async getIngredients({ commit }) {
+      const list = await this.$api.ingredients.getList();
+      commit("SET_BUILDER", { type: "ingredients", property: list });
+    },
+    async getSauces({ commit }) {
+      const list = await this.$api.sauces.getList();
+      commit("SET_BUILDER", { type: "sauces", property: list });
+    },
+    async init({ dispatch }) {
+      dispatch("getDough");
+      dispatch("getSizes");
+      dispatch("getIngredients");
+      dispatch("getSauces");
+    },
     setPizza({ commit }, product) {
       commit("SET_PIZZA", product);
     },

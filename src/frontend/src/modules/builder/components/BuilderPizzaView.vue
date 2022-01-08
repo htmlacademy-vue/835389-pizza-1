@@ -21,7 +21,7 @@
         <div class="pizza__wrapper">
           <template v-for="ingredient in currentPizza.ingredients">
             <div
-              :key="ingredient.id"
+              :key="`view-ingredient-${ingredient.id}`"
               class="pizza__filling"
               :class="[
                 `pizza__filling--${ingredient.value}`,

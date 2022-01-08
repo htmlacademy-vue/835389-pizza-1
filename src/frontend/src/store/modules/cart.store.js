@@ -1,10 +1,11 @@
-import misc from "../../static/misc.json";
 import { normalizeMisc } from "../../common/helpers";
 import {
   ADD_CART,
   CHANGE_CART,
   CHANGE_MISC,
   DELETE_CART,
+  SET_ENTITY,
+  CHANGE_PRICE,
 } from "../mutation-types";
 
 export default {
@@ -13,18 +14,13 @@ export default {
     cartItems: [],
     cartPrice: 0,
     miscPrice: 0,
-    misc: misc.map((el) => {
-      return normalizeMisc(el);
-    }),
+    misc: [],
   },
   mutations: {
-    [ADD_CART](state, item) {
-      let index = state.cartItems.findIndex((el) => el.id === item.id);
-      if (index === -1) {
-        state.cartItems.push(item);
-      } else {
-        state.cartItems[index] = item;
-      }
+    [SET_ENTITY](state, { entity, list }) {
+      state[entity] = list;
+    },
+    [CHANGE_PRICE](state) {
       state.cartItems.forEach((item) => {
         const ingredients_price = item.ingredients
           .filter((item) => item.count && item.count > 0)
@@ -40,6 +36,17 @@ export default {
       state.cartPrice = state.cartItems.reduce((sum, item) => {
         return sum + item.qty * item.price;
       }, 0);
+      state.miscPrice = state.misc.reduce((sum, item) => {
+        return sum + item.qty * item.price;
+      }, 0);
+    },
+    [ADD_CART](state, item) {
+      let index = state.cartItems.findIndex((el) => el.id === item.id);
+      if (index === -1) {
+        state.cartItems.push(item);
+      } else {
+        state.cartItems[index] = item;
+      }
     },
     [CHANGE_CART](state, item) {
       if (item.qty > 0) {
@@ -67,31 +74,39 @@ export default {
           return el;
         }
       });
-      state.miscPrice = state.misc.reduce((sum, item) => {
-        return sum + item.qty * item.price;
-      }, 0);
     },
     [DELETE_CART](state) {
       state.cartItems = [];
       state.cartPrice = 0;
-      state.misc = misc.map((el) => {
+      state.misc = state.misc.map((el) => {
         return normalizeMisc(el);
       });
       state.miscPrice = 0;
     },
   },
   actions: {
+    async fetchMisc({ commit }) {
+      const list = await this.$api.misc.getList();
+      commit("SET_ENTITY", { entity: "misc", list });
+    },
     addCart({ commit }, items) {
       commit("ADD_CART", items);
+      commit("CHANGE_PRICE");
     },
     changeCart({ commit }, product) {
       commit("CHANGE_CART", product);
     },
     changeMisc({ commit }, item) {
       commit("CHANGE_MISC", item);
+      commit("CHANGE_PRICE");
     },
     deleteCart({ commit }) {
       commit("DELETE_CART");
+    },
+    setCart({ commit }, { cartItems, miscItems }) {
+      commit("SET_ENTITY", { entity: "cartItems", list: cartItems });
+      commit("SET_ENTITY", { entity: "misc", list: miscItems });
+      commit("CHANGE_PRICE");
     },
   },
   getters: {
