@@ -85,12 +85,16 @@ export default {
       return formattedPrice(price);
     },
     increment(product) {
-      product.qty = product.qty + 1;
-      this.$store.dispatch("Cart/changeCart", product);
+      this.$store.dispatch("Cart/changeCart", {
+        ...product,
+        qty: product.qty + 1,
+      });
     },
     decrement(product) {
-      product.qty = product.qty - 1;
-      this.$store.dispatch("Cart/changeCart", product);
+      this.$store.dispatch("Cart/changeCart", {
+        ...product,
+        qty: product.qty - 1,
+      });
     },
     changePizza(product) {
       this.$store.dispatch("Builder/setPizza", product);

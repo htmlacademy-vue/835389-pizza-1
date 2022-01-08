@@ -16,6 +16,7 @@
           @changeAddress="changeAddress"
           @changePhone="changePhone"
         />
+        {{ error }}
       </div>
     </main>
     <section class="footer">
@@ -64,6 +65,7 @@ export default {
         building: "",
         flat: "",
       },
+      error: "",
     };
   },
   computed: {
@@ -101,7 +103,7 @@ export default {
       }
     },
     changeAddress(data) {
-      this.address[data.field] = data.value;
+      this.address[data.field] = data.val;
     },
     changePhone(val) {
       this.phone = val;
@@ -127,6 +129,13 @@ export default {
       this.$router.push("/");
     },
     submitOrder() {
+      if (
+        this.delivery !== "1" &&
+        (!this.address.street.length || !this.address.building.length)
+      ) {
+        this.error = "Заполните Адрес";
+        return;
+      }
       let order = {
         userId: this.isAuthenticated ? this.user.id : null,
         phone: this.phone,
@@ -156,7 +165,7 @@ export default {
             };
           }),
       };
-      if (this.isUserAddress) {
+      if (this.delivery !== "1") {
         order.address = this.address;
       }
       this.$store.dispatch("Orders/createOrder", order).then((res) => {

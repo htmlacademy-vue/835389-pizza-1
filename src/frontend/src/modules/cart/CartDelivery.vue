@@ -41,7 +41,7 @@
               type="text"
               name="street"
               :value="address.street"
-              @input="changeAddress('street', $event.target.value)"
+              @input="changeAddress($event.target.value, 'street')"
               :readonly="isUserAddress"
             />
           </label>
@@ -54,7 +54,7 @@
               type="text"
               name="house"
               :value="address.building"
-              @input="changeAddress('building', $event.target.value)"
+              @input="changeAddress($event.target.value, 'building')"
               :readonly="isUserAddress"
             />
           </label>
@@ -67,7 +67,7 @@
               type="text"
               name="apartment"
               :value="address.flat"
-              @input="changeAddress('flat', $event.target.value)"
+              @input="changeAddress($event.target.value, 'flat')"
               :readonly="isUserAddress"
             />
           </label>
@@ -83,9 +83,24 @@ import { mapState } from "vuex";
 export default {
   name: "CartDelivery",
   props: {
-    delivery: String,
-    address: Object,
-    phone: String,
+    delivery: {
+      type: String,
+      default() {
+        return "";
+      },
+    },
+    address: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    phone: {
+      type: String,
+      default() {
+        return "";
+      },
+    },
   },
   computed: {
     ...mapState("Auth", {
@@ -99,8 +114,8 @@ export default {
     selectAddress(val) {
       this.$emit("selectAddress", val);
     },
-    changeAddress(field, val) {
-      this.$emit("changeAddress", { field, val });
+    changeAddress(val, field) {
+      this.$emit("changeAddress", { val, field });
     },
   },
 };

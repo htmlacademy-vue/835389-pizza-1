@@ -45,14 +45,16 @@ export default {
       if (index === -1) {
         state.cartItems.push(item);
       } else {
-        state.cartItems[index] = item;
+        state.cartItems.splice(index, 1, item);
       }
     },
     [CHANGE_CART](state, item) {
       if (item.qty > 0) {
-        state.cartItems.forEach((product) => {
+        state.cartItems = state.cartItems.map((product) => {
           if (product.id === item.id) {
-            product = item;
+            return {
+              ...item,
+            };
           }
           return product;
         });
