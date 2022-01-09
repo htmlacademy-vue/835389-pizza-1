@@ -26,3 +26,8 @@ export const normalizeMisc = (property) => {
     qty: 0,
   };
 };
+
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+};

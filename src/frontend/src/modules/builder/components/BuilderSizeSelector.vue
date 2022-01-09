@@ -5,7 +5,7 @@
       <div class="sheet__content diameter">
         <RadioButton
           v-for="size in pizza.sizes"
-          :key="size.id"
+          :key="`size-${size.id}`"
           :input="size"
           @change="changeSize"
           :class-name="`diameter__input diameter__input--${size.value}`"

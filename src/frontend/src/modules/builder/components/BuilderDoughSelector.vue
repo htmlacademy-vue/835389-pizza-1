@@ -5,7 +5,7 @@
       <div class="sheet__content dough">
         <RadioButton
           v-for="item in pizza.dough"
-          :key="item.id"
+          :key="`dough-${item.id}`"
           @change="changeDough"
           :class-name="`dough__input dough__input--${item.value}`"
           name="dought"

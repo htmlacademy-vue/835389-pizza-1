@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { setAuth } from "@/common/helpers";
 export default {
   name: "App",
   computed: {
@@ -14,6 +15,13 @@ export default {
       const layout = this.$route.meta.layout;
       return () => import(`@/layouts/${layout}.vue`);
     },
+  },
+  created() {
+    if (this.$jwt.getToken()) {
+      setAuth(this.$store);
+    }
+    this.$store.dispatch("Builder/init");
+    this.$store.dispatch("Cart/fetchMisc");
   },
 };
 </script>
