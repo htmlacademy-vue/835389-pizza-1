@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <router-view />
+      <transition
+        name="view"
+        appear
+        enter-active-class="animate__animated animate__slideInRight"
+      >
+        <router-view />
+      </transition>
     </component>
   </div>
 </template>
@@ -12,7 +18,7 @@ export default {
   name: "App",
   computed: {
     layout() {
-      const layout = this.$route.meta.layout;
+      const layout = this.$route.meta.layout || "AppLayout";
       return () => import(`@/layouts/${layout}.vue`);
     },
   },

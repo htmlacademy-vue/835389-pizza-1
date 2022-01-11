@@ -1,6 +1,11 @@
 <template>
   <form class="layout-form" @submit.prevent="submitOrder">
-    <CartModal v-if="isModalOrder" @close="closeModal" />
+    <transition
+      enter-active-class="animate__animated animate__fadeInDownBig"
+      leave-active-class="animate__animated animate__fadeOutDownBig"
+    >
+      <CartModal v-if="isModalOrder" @close="closeModal" />
+    </transition>
     <main class="content cart">
       <div class="container">
         <div class="cart__title">

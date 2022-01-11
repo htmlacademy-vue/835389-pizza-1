@@ -19,17 +19,23 @@
     >
       <div class="pizza" :class="pizzaClass">
         <div class="pizza__wrapper">
-          <template v-for="ingredient in currentPizza.ingredients">
-            <div
-              :key="`view-ingredient-${ingredient.id}`"
-              class="pizza__filling"
-              :class="[
-                `pizza__filling--${ingredient.value}`,
-                ingredient.count === 2 ? 'pizza__filling--second' : '',
-                ingredient.count === 3 ? 'pizza__filling--third' : '',
-              ]"
-            ></div>
-          </template>
+          <transition-group
+            name="zoom"
+            enter-active-class="animate__animated animate__zoomIn"
+            leave-active-class="animate__animated animate__zoomOut"
+          >
+            <template v-for="ingredient in currentPizza.ingredients">
+              <div
+                :key="`view-ingredient-${ingredient.id}`"
+                class="pizza__filling"
+                :class="[
+                  `pizza__filling--${ingredient.value}`,
+                  ingredient.count === 2 ? 'pizza__filling--second' : '',
+                  ingredient.count === 3 ? 'pizza__filling--third' : '',
+                ]"
+              ></div>
+            </template>
+          </transition-group>
         </div>
       </div>
     </div>
