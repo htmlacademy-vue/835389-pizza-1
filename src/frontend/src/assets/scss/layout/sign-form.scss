@@ -1,8 +1,8 @@
 .sign-form {
-  @include pf_center-all;
-
+  top: calc(50% - 211px);
+  left: calc(50% - 227px);
+  position: absolute;
   z-index: 10;
-
   display: block;
 
   box-sizing: border-box;
