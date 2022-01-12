@@ -28,11 +28,19 @@
               <div
                 :key="`view-ingredient-${ingredient.id}`"
                 class="pizza__filling"
-                :class="[
-                  `pizza__filling--${ingredient.value}`,
-                  ingredient.count === 2 ? 'pizza__filling--second' : '',
-                  ingredient.count === 3 ? 'pizza__filling--third' : '',
-                ]"
+                :class="`pizza__filling--${ingredient.value}`"
+              ></div>
+              <div
+                v-if="ingredient.count > 1"
+                :key="`view-ingredient-second-${ingredient.id}`"
+                class="pizza__filling pizza__filling--second"
+                :class="`pizza__filling--${ingredient.value}`"
+              ></div>
+              <div
+                v-if="ingredient.count > 2"
+                :key="`view-ingredient-third-${ingredient.id}`"
+                class="pizza__filling pizza__filling--third"
+                :class="`pizza__filling--${ingredient.value}`"
               ></div>
             </template>
           </transition-group>

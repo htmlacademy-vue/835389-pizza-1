@@ -1,8 +1,8 @@
 <template>
   <form class="layout-form" @submit.prevent="submitOrder">
     <transition
-      enter-active-class="animate__animated animate__fadeInDownBig"
-      leave-active-class="animate__animated animate__fadeOutDownBig"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
     >
       <CartModal v-if="isModalOrder" @close="closeModal" />
     </transition>
