@@ -9,10 +9,10 @@
       class="visually-hidden"
     />
     <template v-if="input.description">
-      <b>{{ input.name }}</b>
-      <span>{{ input.description }}</span>
+      <b data-test="name">{{ input.name }}</b>
+      <span data-test="description">{{ input.description }}</span>
     </template>
-    <span v-else>{{ input.name }}</span>
+    <span v-else data-test="name">{{ input.name }}</span>
   </label>
 </template>
 
