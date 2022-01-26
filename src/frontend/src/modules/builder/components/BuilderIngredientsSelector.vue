@@ -13,6 +13,7 @@
             name="sauce"
             @change="changeSauce"
             :checked="sauce.id === currentPizza.sauces.id"
+            data-test="sauce-radio-button"
           />
         </div>
         <div class="ingredients__filling">
@@ -23,11 +24,12 @@
               :key="`ingredient-${ingredient.id}`"
               class="ingredients__item"
             >
-              <SelectorItem :item="ingredient" />
+              <SelectorItem :item="ingredient" data-test="selector-item" />
               <ItemCounter
                 :count="ingredient.count"
                 :id="ingredient.id"
                 @change-count="changeIngredient"
+                data-test="item-counter"
               />
             </li>
           </ul>

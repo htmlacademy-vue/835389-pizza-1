@@ -11,6 +11,7 @@
           :class-name="`diameter__input diameter__input--${size.value}`"
           :name="'diameter'"
           :checked="size.id === currentPizza.sizes.id"
+          data-test="size-radio-button"
         />
       </div>
     </div>
