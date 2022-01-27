@@ -3,7 +3,7 @@
     <li v-for="product in cartItems" :key="product.id" class="cart-list__item">
       <div class="product cart-list__product">
         <img
-          src="../../assets/img/product.svg"
+          src="../../../assets/img/product.svg"
           class="product__img"
           width="56"
           height="56"
@@ -64,7 +64,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { formattedPrice } from "../../common/helpers";
+import { formattedPrice } from "../../../common/helpers";
 
 export default {
   name: "CartProducts",

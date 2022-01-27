@@ -8,6 +8,7 @@
         @input="changeName($event.target.value)"
         :value="currentPizza.name"
         placeholder="Введите название пиццы"
+        data-test="input-pizza-name"
       />
     </label>
 
@@ -17,14 +18,14 @@
       @dragover.prevent
       @dragenter.prevent
     >
-      <div class="pizza" :class="pizzaClass">
+      <div class="pizza" :class="pizzaClass" data-test="pizza">
         <div class="pizza__wrapper">
           <transition-group
             name="zoom"
             enter-active-class="animate__animated animate__zoomIn"
             leave-active-class="animate__animated animate__zoomOut"
           >
-            <template v-for="ingredient in currentPizza.ingredients">
+            <template data-test="pizza-ingredient" v-for="ingredient in currentPizza.ingredients">
               <div
                 :key="`view-ingredient-${ingredient.id}`"
                 class="pizza__filling"
@@ -49,8 +50,9 @@
     </div>
 
     <div class="content__result">
-      <p>Итого: {{ formattedPrice }} ₽</p>
+      <p>Итого: <span data-test="price">{{ formattedPrice }}</span> ₽</p>
       <button
+        data-test="button"
         type="button"
         class="button"
         :disabled="isDisabled"

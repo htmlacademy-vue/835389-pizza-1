@@ -4,7 +4,11 @@
       enter-active-class="animate__animated animate__fadeIn"
       leave-active-class="animate__animated animate__fadeOut"
     >
-      <CartModal v-if="isModalOrder" @close="closeModal" />
+      <CartModal
+        data-test="cart-modal"
+        v-if="isModalOrder"
+        @close="closeModal"
+      />
     </transition>
     <main class="content cart">
       <div class="container">
@@ -50,7 +54,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import { formattedPrice } from "../../common/helpers";
+import { formattedPrice } from "../../../common/helpers";
 import { uniqueId } from "lodash";
 import CartModal from "./CartModal";
 import CartProducts from "./CartProducts";
