@@ -1,6 +1,6 @@
 <template>
   <main class="layout">
-    <AppLayoutSidebar />
+    <AppLayoutSidebar data-test="sidebar" />
 
     <div class="layout__content">
       <div class="layout__title">
@@ -8,12 +8,19 @@
       </div>
 
       <div class="user">
-        <img :src="user.avatar" :alt="user.name" width="72" height="72" />
+        <img
+          data-test="avatar"
+          :src="user.avatar"
+          :alt="user.name"
+          width="72"
+          height="72"
+        />
         <div class="user__name">
-          <span>{{ user.name }}</span>
+          <span data-test="user-name">{{ user.name }}</span>
         </div>
         <p class="user__phone">
-          Контактный телефон: <span>{{ user.phone }}</span>
+          Контактный телефон:
+          <span data-test="user-phone">{{ user.phone }}</span>
         </p>
       </div>
 
@@ -22,6 +29,7 @@
           class="sheet address-form"
           v-for="(address, i) in addresses"
           :key="address.id"
+          data-test="user-address"
         >
           <div class="address-form__header">
             <b>Адрес №{{ i + 1 }}. {{ address.name }}</b>
@@ -36,7 +44,11 @@
         </div>
       </div>
 
-      <div class="layout__address" v-if="isFormAddress">
+      <div
+        data-test="form-address"
+        class="layout__address"
+        v-if="isFormAddress"
+      >
         <form
           @submit.prevent="addAddress"
           class="address-form address-form--opened sheet"
@@ -115,7 +127,9 @@
             >
               Удалить
             </button>
-            <button type="submit" class="button">Сохранить</button>
+            <button type="submit" class="button" data-test="submit-address">
+              Сохранить
+            </button>
           </div>
         </form>
       </div>
@@ -125,6 +139,7 @@
           type="button"
           class="button button--border"
           @click="isFormAddress = true"
+          data-test="add-address"
         >
           Добавить новый адрес
         </button>

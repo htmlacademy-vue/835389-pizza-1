@@ -25,7 +25,10 @@
             enter-active-class="animate__animated animate__zoomIn"
             leave-active-class="animate__animated animate__zoomOut"
           >
-            <template data-test="pizza-ingredient" v-for="ingredient in currentPizza.ingredients">
+            <template
+              data-test="pizza-ingredient"
+              v-for="ingredient in currentPizza.ingredients"
+            >
               <div
                 :key="`view-ingredient-${ingredient.id}`"
                 class="pizza__filling"
@@ -50,7 +53,13 @@
     </div>
 
     <div class="content__result">
-      <p>Итого: <span data-test="price">{{ formattedPrice }}</span> ₽</p>
+      <p>
+        Итого:
+        <span data-test="price">
+          {{ formattedPrice }}
+        </span>
+        ₽
+      </p>
       <button
         data-test="button"
         type="button"

@@ -35,7 +35,7 @@ describe("BuilderDoughSelector", () => {
     };
     store = generateMockStore(actions);
     createDough(store);
-    createComponent({ localVue, store });
+    createComponent({ localVue, store, actions });
   });
 
   afterEach(() => {
@@ -48,9 +48,7 @@ describe("BuilderDoughSelector", () => {
 
   it("Correct set checked dough", () => {
     store.commit("Builder/CHANGE_PIZZA", { name: "dough", id: dough[0].id });
-    const doughComponents = wrapper.findAll(
-      "[data-test='dough-radio-button']"
-    );
+    const doughComponents = wrapper.findAll("[data-test='dough-radio-button']");
     expect(doughComponents.at(0).props("checked")).toBe(true);
     for (let i = 1; i < dough.length; i++) {
       expect(doughComponents.at(i).props("checked")).toBe(false);

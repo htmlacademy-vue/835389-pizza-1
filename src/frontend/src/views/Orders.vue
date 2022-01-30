@@ -1,11 +1,16 @@
 <template>
   <main class="layout">
-    <AppLayoutSidebar />
+    <AppLayoutSidebar data-test="sidebar" />
     <div class="layout__content">
       <div class="layout__title">
         <h1 class="title title--big">История заказов</h1>
       </div>
-      <section class="sheet order" v-for="order in orders" :key="order.id">
+      <section
+        class="sheet order"
+        data-test="order-item"
+        v-for="order in orders"
+        :key="order.id"
+      >
         <div class="order__wrapper">
           <div class="order__number">
             <b>Заказ #{{ order.id }}</b>

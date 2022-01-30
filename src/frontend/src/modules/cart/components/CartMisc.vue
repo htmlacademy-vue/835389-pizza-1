@@ -1,7 +1,12 @@
 <template>
   <div class="cart__additional">
     <ul class="additional-list">
-      <li v-for="el in misc" :key="el.id" class="additional-list__item sheet">
+      <li
+        v-for="el in misc"
+        :key="el.id"
+        class="additional-list__item sheet"
+        data-test="misc-item"
+      >
         <p class="additional-list__description">
           <img :src="el.image" width="39" height="60" :alt="el.name" />
           <span>{{ el.name }}</span>

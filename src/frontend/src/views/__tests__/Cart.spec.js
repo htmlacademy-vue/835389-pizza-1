@@ -1,16 +1,10 @@
 import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Cart from "../Cart";
-import {generateMockStore} from "../../store/mock";
+import { generateMockStore } from "../../store/mock";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-
-let cartItems = [{}, {}];
-
-const createCart = (store) => {
-  store.commit("SET_ENTITY", { entity: "cartItems", list: cartItems });
-};
 
 describe("Cart", () => {
   let wrapper;
@@ -22,7 +16,6 @@ describe("Cart", () => {
 
   beforeEach(() => {
     store = generateMockStore();
-    createCart(store);
     createComponent({ localVue, store });
   });
 
