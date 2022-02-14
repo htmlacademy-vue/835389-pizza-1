@@ -13,7 +13,7 @@ let miscItems = misc.map((item) => normalizeMisc(item));
 const createMisc = (store) => {
   store.commit("Cart/SET_ENTITY", {
     type: "misc",
-    property: miscItems,
+    list: miscItems,
   });
 };
 
@@ -47,6 +47,6 @@ describe("CartMisc", () => {
 
   it("Misc items rendered", () => {
     const items = wrapper.findAll("[data-test='misc-item']");
-    expect(items.length).toHaveLength(miscItems.length);
+    expect(items).toHaveLength(miscItems.length);
   });
 });

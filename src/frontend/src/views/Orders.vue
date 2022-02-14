@@ -13,7 +13,7 @@
       >
         <div class="order__wrapper">
           <div class="order__number">
-            <b>Заказ #{{ order.id }}</b>
+            <b data-test="order-id">Заказ #{{ order.id }}</b>
           </div>
 
           <div class="order__sum">
@@ -33,6 +33,7 @@
             class="order__item"
             v-for="pizza in order.orderPizzas"
             :key="pizza.id"
+            data-test="order-pizza-item"
           >
             <div class="product">
               <img

@@ -112,7 +112,7 @@ describe("BuilderPizzaView", () => {
   });
 
   it("Correct display price", () => {
-    expect(wrapper.find("[data-test='price']").element.textContent).toBe(
+    expect(wrapper.find("[data-test='price']").text()).toBe(
       String(getters.Builder.pizzaPrice)
     );
   });

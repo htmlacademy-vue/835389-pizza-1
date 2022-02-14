@@ -1,12 +1,18 @@
 import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import VueRouter from "vue-router";
 import Orders from "../Orders";
 import { generateMockStore } from "../../store/mock";
+import pizza from "../../static/pizza.json";
+import {
+  PIZZA_DOUGH,
+  PIZZA_INGREDIENTS,
+  PIZZA_SAUSES,
+  PIZZA_SIZES,
+} from "../../common/constants";
+import {normalizePizza} from "../../common/helpers";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-localVue.use(VueRouter);
 
 const user = {
   name: "Вася Пупкин",
@@ -101,11 +107,31 @@ const createUser = (store) => {
   });
   store.commit("Auth/SET_ENTITY", {
     entity: "addresses",
-    list: addresses,
+    value: addresses,
   });
 };
 
 const createOrdersList = (store) => {
+  store.commit("Builder/SET_BUILDER", {
+    type: "dough",
+    property: pizza.dough.map((item) => normalizePizza(item, PIZZA_DOUGH))
+  });
+  store.commit("Builder/SET_BUILDER", {
+    type: "sauces",
+    property: pizza.sauces.map((item) => {
+      return normalizePizza(item, PIZZA_SAUSES);
+    })
+  });
+  store.commit("Builder/SET_BUILDER", {
+    type: "ingredients",
+    property: pizza.ingredients.map((item) => {
+      return normalizePizza(item, PIZZA_INGREDIENTS, "ingredients");
+    }),
+  });
+  store.commit("Builder/SET_BUILDER", {
+    type: "sizes",
+    property: pizza.sizes.map((item) => normalizePizza(item, PIZZA_SIZES)),
+  });
   store.commit("Orders/SET_ENTITY", {
     entity: "orders",
     list: orders,
@@ -117,7 +143,12 @@ describe("Orders", () => {
   let store;
   let actions;
   const listeners = { click: null };
-  const router = new VueRouter();
+  const mocks = {
+    $router: {
+      push: jest.fn(),
+    },
+  };
+  const stubs = ["router-link", "router-view"];
 
   const createComponent = (options) => {
     wrapper = mount(Orders, options);
@@ -138,7 +169,7 @@ describe("Orders", () => {
     listeners.submit = jest.fn();
     createUser(store);
     createOrdersList(store);
-    createComponent({ localVue, store, actions, router });
+    createComponent({ localVue, actions, store, mocks, stubs });
   });
 
   afterEach(() => {
@@ -153,8 +184,27 @@ describe("Orders", () => {
     expect(wrapper.find("[data-test='sidebar']")).toBeTruthy();
   });
 
-  it("Correct count orders rendered", () => {
-    let ordersList = wrapper.findAll("[data-test='order-item]'");
+  it("Correct orders rendered", () => {
+    let ordersList = wrapper.findAll("[data-test='order-item']");
     expect(ordersList).toHaveLength(orders.length);
+  });
+
+  it("Correct order number rendered", () => {
+    orders.forEach((order, ind) => {
+      expect(wrapper.findAll("[data-test='order-id']").at(ind).text()).toBe(
+        `Заказ #${orders[ind].id}`
+      );
+    });
+  });
+
+  it("Correct order pizza items rendered", () => {
+    orders.forEach((order, ind) => {
+      expect(
+        wrapper
+          .findAll("[data-test='order-item']")
+          .at(ind)
+          .findAll("[data-test='order-pizza-item']")
+      ).toHaveLength(orders[ind].orderPizzas.length);
+    });
   });
 });

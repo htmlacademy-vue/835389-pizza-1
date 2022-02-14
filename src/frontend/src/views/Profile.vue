@@ -34,7 +34,12 @@
           <div class="address-form__header">
             <b>Адрес №{{ i + 1 }}. {{ address.name }}</b>
             <div class="address-form__edit">
-              <button type="button" class="icon" @click="editAddress(address)">
+              <button
+                type="button"
+                class="icon"
+                @click="editAddress(address)"
+                data-test="change-address"
+              >
                 <span class="visually-hidden">Изменить адрес</span>
               </button>
             </div>
@@ -51,10 +56,11 @@
       >
         <form
           @submit.prevent="addAddress"
+          data-test="form"
           class="address-form address-form--opened sheet"
         >
           <div class="address-form__header">
-            <b>Адрес №{{ indexAddress }}</b>
+            <b data-test="index-address">Адрес №{{ indexAddress }}</b>
           </div>
 
           <div class="address-form__wrapper">
@@ -124,6 +130,7 @@
               class="button button--transparent"
               v-if="address.id"
               @click="deleteAddress"
+              data-test="delete-address"
             >
               Удалить
             </button>
@@ -211,7 +218,7 @@ export default {
     },
     addAddress() {
       if (this.isValidAddress) {
-        if (this.address.id !== null) {
+        if (this.address.id) {
           this.$store.dispatch("Auth/changeAddress", this.address);
         } else {
           this.$store.dispatch("Auth/addAddress", this.address);

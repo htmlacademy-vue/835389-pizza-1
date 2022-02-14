@@ -36,13 +36,13 @@ export default {
           order.orderPizzas = order.orderPizzas.map((pizza) => {
             const builderPizza = rootState.Builder.pizza;
             let dough = builderPizza.dough.find((el) => {
-              return (el.id = pizza.doughId);
+              return el.id === pizza.doughId;
             });
             let sizes = builderPizza.sizes.find((el) => {
-              return (el.id = pizza.sizeId);
+              return el.id === pizza.sizeId;
             });
             let sauces = builderPizza.sauces.find((el) => {
-              return (el.id = pizza.sauceId);
+              return el.id === pizza.sauceId;
             });
             let updateIngredients = pizza.ingredients.map((el) => {
               let ingredient = builderPizza.ingredients.find((ingredient) => {

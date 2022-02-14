@@ -13,7 +13,12 @@
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
     <div class="popup__button">
-      <a href="#" class="button" data-test="btn-wait" @click.prevent="$emit('close')">
+      <a
+        href="#"
+        class="button"
+        data-test="btn-wait"
+        @click.prevent="$emit('close')"
+      >
         Отлично, я жду!
       </a>
     </div>
