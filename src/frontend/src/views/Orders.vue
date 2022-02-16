@@ -42,21 +42,30 @@
                 width="56"
                 height="56"
                 :alt="pizza.name"
+                data-test="product-img"
               />
               <div class="product__text">
-                <h2>{{ pizza.name }}</h2>
+                <h2 data-test="product-name">{{ pizza.name }}</h2>
                 <ul>
                   <li>
-                    {{ pizza.sizes.name }},
-                    {{ productDough(pizza.dough.value) }}
+                    <span data-test="product-size">
+                      {{ pizza.sizes.name }}
+                    </span>,
+                    <span data-test="product-dough">
+                      {{ productDough(pizza.dough.value) }}
+                    </span>
                   </li>
-                  <li>Соус: {{ pizza.sauces.name }}</li>
-                  <li>Начинка: {{ productIngredients(pizza.ingredients) }}</li>
+                  <li data-test="product-sauce">
+                    Соус: {{ pizza.sauces.name }}
+                  </li>
+                  <li data-test="product-ingredients">
+                    Начинка: {{ productIngredients(pizza.ingredients) }}
+                  </li>
                 </ul>
               </div>
             </div>
 
-            <p class="order__price">
+            <p class="order__price" data-test="product-price">
               <template v-if="pizza.quantity > 1">
                 {{ pizza.quantity }} х
               </template>
@@ -66,11 +75,21 @@
         </ul>
 
         <ul class="order__additional">
-          <li v-for="misc in order.orderMisc" :key="misc.id">
-            <img :src="misc.image" width="20" height="30" :alt="misc.name" />
+          <li
+            v-for="misc in order.orderMisc"
+            :key="misc.id"
+            data-test="misc-item"
+          >
+            <img
+              :src="misc.image"
+              width="20"
+              height="30"
+              :alt="misc.name"
+              data-test="misc-img"
+            />
             <p>
-              <span>{{ misc.name }}</span>
-              <b>
+              <span data-test="misc-name">{{ misc.name }}</span>
+              <b data-test="misc-price">
                 <template v-if="misc.quantity > 1">
                   {{ misc.quantity }} х
                 </template>

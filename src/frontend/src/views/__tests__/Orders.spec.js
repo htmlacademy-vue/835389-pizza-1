@@ -9,7 +9,7 @@ import {
   PIZZA_SAUSES,
   PIZZA_SIZES,
 } from "../../common/constants";
-import {normalizePizza} from "../../common/helpers";
+import { normalizePizza } from "../../common/helpers";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -45,6 +45,7 @@ let orders = [
         name: "любимка",
         quantity: 1,
         sauceId: 2,
+        pricePizza: 900,
         sauces: {
           id: 2,
           name: "Томатный",
@@ -61,6 +62,12 @@ let orders = [
           value: "light",
         },
         sizeId: 2,
+        sizes: {
+          id: 2,
+          name: "32 см",
+          image: "/public/img/diameter.svg",
+          multiplier: 2,
+        },
         orderId: 3,
         ingredients: [
           {
@@ -114,13 +121,13 @@ const createUser = (store) => {
 const createOrdersList = (store) => {
   store.commit("Builder/SET_BUILDER", {
     type: "dough",
-    property: pizza.dough.map((item) => normalizePizza(item, PIZZA_DOUGH))
+    property: pizza.dough.map((item) => normalizePizza(item, PIZZA_DOUGH)),
   });
   store.commit("Builder/SET_BUILDER", {
     type: "sauces",
     property: pizza.sauces.map((item) => {
       return normalizePizza(item, PIZZA_SAUSES);
-    })
+    }),
   });
   store.commit("Builder/SET_BUILDER", {
     type: "ingredients",
@@ -205,6 +212,46 @@ describe("Orders", () => {
           .at(ind)
           .findAll("[data-test='order-pizza-item']")
       ).toHaveLength(orders[ind].orderPizzas.length);
+    });
+  });
+
+  it("Correct order pizza item rendered", () => {
+    orders.forEach((order, ind) => {
+      const items = wrapper
+        .findAll("[data-test='order-item']")
+        .at(ind)
+        .findAll("[data-test='order-pizza-item']");
+      for (let i = 0; i < items.length; i++) {
+        expect(
+          items.at(i).find("[data-test='product-img']").attributes("alt")
+        ).toBe(order.orderPizzas[i].name);
+        expect(items.at(i).find("[data-test='product-name']").text()).toBe(
+          order.orderPizzas[i].name
+        );
+        expect(items.at(i).find("[data-test='product-size']").text()).toBe(
+          order.orderPizzas[i].sizes.name
+        );
+        expect(items.at(i).find("[data-test='product-dough']").text()).toBe(
+          order.orderPizzas[i].dough.value === "large"
+            ? "на толстом тесте"
+            : "на тонком тесте"
+        );
+        expect(items.at(i).find("[data-test='product-sauce']").text()).toBe(
+          `Соус: ${order.orderPizzas[i].sauces.name}`
+        );
+        expect(
+          items.at(i).find("[data-test='product-ingredients']").text()
+        ).toBe(
+          `Начинка: ${order.orderPizzas[i].ingredients
+            .map((item) => item.name)
+            .join(", ")}`
+        );
+        expect(items.at(i).find("[data-test='product-price']").text()).toBe(
+          order.orderPizzas[i].quantity > 1
+            ? `${order.orderPizzas[i].quantity} х ${order.orderPizzas[i].pricePizza} ₽`
+            : `${order.orderPizzas[i].pricePizza} ₽`
+        );
+      }
     });
   });
 });
