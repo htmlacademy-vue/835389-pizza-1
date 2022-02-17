@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import Orders from "../Orders";
 import { generateMockStore } from "../../store/mock";
 import pizza from "../../static/pizza.json";
+import misc from "../../static/misc.json";
 import {
   PIZZA_DOUGH,
   PIZZA_INGREDIENTS,
@@ -91,15 +92,16 @@ let orders = [
         ],
       },
     ],
-    orderAddress: {
-      id: 1,
-      name: "test",
-      street: "street",
-      building: "building",
-      flat: "flat",
-      comment: null,
-      userId: 1,
-    },
+    orderMisc: [
+      {
+        miscId: 1,
+        id: 1,
+        name: "Cola-Cola 0,5 литра",
+        image: "/public/img/cola.svg",
+        price: 56,
+        quality: 1,
+      },
+    ],
   },
 ];
 
@@ -143,6 +145,15 @@ const createOrdersList = (store) => {
     entity: "orders",
     list: orders,
   });
+  store.commit("Cart/SET_ENTITY", {
+    entity: "misc",
+    list: misc.slice(0, 1).map((item) => {
+      return {
+        ...item,
+        qty: 1,
+      };
+    }),
+  });
 };
 
 describe("Orders", () => {
@@ -170,6 +181,9 @@ describe("Orders", () => {
       Orders: {
         getOrders: jest.fn(),
         deleteOrder: jest.fn(),
+      },
+      Cart: {
+        setCart: jest.fn(),
       },
     };
     store = generateMockStore(actions);
@@ -252,6 +266,84 @@ describe("Orders", () => {
             : `${order.orderPizzas[i].pricePizza} ₽`
         );
       }
+    });
+  });
+
+  it("Correct order misc items rendered", () => {
+    orders.forEach((order, ind) => {
+      expect(
+        wrapper
+          .findAll("[data-test='order-item']")
+          .at(ind)
+          .findAll("[data-test='misc-item']")
+      ).toHaveLength(orders[ind].orderMisc.length);
+    });
+  });
+
+  it("Correct order misc item rendered", () => {
+    orders.forEach((order, ind) => {
+      const items = wrapper
+        .findAll("[data-test='order-item']")
+        .at(ind)
+        .findAll("[data-test='misc-item']");
+      for (let i = 0; i < items.length; i++) {
+        expect(
+          items.at(i).find("[data-test='misc-img']").attributes("src")
+        ).toBe(order.orderMisc[i].image);
+        expect(
+          items.at(i).find("[data-test='misc-img']").attributes("alt")
+        ).toBe(order.orderMisc[i].name);
+        expect(items.at(i).find("[data-test='misc-name']").text()).toBe(
+          order.orderMisc[i].name
+        );
+        expect(items.at(i).find("[data-test='misc-price']").text()).toBe(
+          order.orderMisc[i].quantity > 1
+            ? `${order.orderMisc[i].quantity} х ${order.orderMisc[i].price} ₽`
+            : `${order.orderMisc[i].price} ₽`
+        );
+      }
+    });
+  });
+
+  it("Correct order address rendered", () => {
+    orders.forEach((order, ind) => {
+      expect(
+        wrapper
+          .findAll("[data-test='order-item']")
+          .at(ind)
+          .find("[data-test='order-address']")
+          .text()
+      ).toBe(
+        `Адрес доставки: ${
+          addresses.find((address) => address.id === order.addressId).name
+        }`
+      );
+    });
+  });
+
+  it("Correct delete order", () => {
+    orders.forEach((order, ind) => {
+      wrapper
+        .findAll("[data-test='order-item']")
+        .at(ind)
+        .find("[data-test='delete-order']")
+        .trigger("click");
+      expect(actions.Orders.deleteOrder).toHaveBeenCalledWith(
+        expect.any(Object),
+        order.id
+      );
+    });
+  });
+
+  it("Correct repeat order", () => {
+    orders.forEach((order, ind) => {
+      wrapper
+        .findAll("[data-test='order-item']")
+        .at(ind)
+        .find("[data-test='repeat-order']")
+        .trigger("click");
+      expect(actions.Cart.setCart).toHaveBeenCalled();
+      expect(mocks.$router.push).toHaveBeenCalledWith("/cart");
     });
   });
 });

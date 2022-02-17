@@ -8,8 +8,14 @@
         data-test="misc-item"
       >
         <p class="additional-list__description">
-          <img :src="el.image" width="39" height="60" :alt="el.name" />
-          <span>{{ el.name }}</span>
+          <img
+            :src="el.image"
+            width="39"
+            height="60"
+            :alt="el.name"
+            data-test="misc-image"
+          />
+          <span data-test="misc-name">{{ el.name }}</span>
         </p>
 
         <div class="additional-list__wrapper">
@@ -18,7 +24,8 @@
               type="button"
               class="counter__button counter__button--minus"
               :disabled="el.qty < 1"
-              @click="changeMisc(el.id, el.qty - 1)"
+              @click="changeMisc(el.id, 'decrement')"
+              data-test="misc-button-minus"
             >
               <span class="visually-hidden">Меньше</span>
             </button>
@@ -28,20 +35,22 @@
               class="counter__input"
               :value="el.qty"
               readonly
+              data-test="misc-counter"
             />
             <button
               type="button"
               class="
                 counter__button counter__button--plus counter__button--orange
               "
-              @click="changeMisc(el.id, el.qty + 1)"
+              @click="changeMisc(el.id, 'increment')"
+              data-test="misc-button-plus"
             >
               <span class="visually-hidden">Больше</span>
             </button>
           </div>
 
           <div class="additional-list__price">
-            <b>× {{ el.price }} ₽</b>
+            <b data-test="misc-price">× {{ el.price }} ₽</b>
           </div>
         </div>
       </li>
@@ -60,9 +69,9 @@ export default {
     }),
   },
   methods: {
-    changeMisc(id, qty) {
-      if (qty >= 0) {
-        this.$store.dispatch("Cart/changeMisc", { id, qty });
+    changeMisc(id, action) {
+      if (this.misc.find((el) => el.id === id).qty >= 0) {
+        this.$store.dispatch("Cart/changeMisc", { id, action });
       }
     },
   },

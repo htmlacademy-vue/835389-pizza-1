@@ -20,10 +20,18 @@
             <span>Сумма заказа: {{ orderPrice(order) }} ₽</span>
           </div>
 
-          <div class="order__button" @click="deleteOrder(order.id)">
+          <div
+            class="order__button"
+            @click="deleteOrder(order.id)"
+            data-test="delete-order"
+          >
             <button type="button" class="button button--border">Удалить</button>
           </div>
-          <div class="order__button" @click="repeatOrder(order)">
+          <div
+            class="order__button"
+            @click="repeatOrder(order)"
+            data-test="repeat-order"
+          >
             <button type="button" class="button">Повторить</button>
           </div>
         </div>
@@ -99,9 +107,12 @@
           </li>
         </ul>
 
-        <p class="order__address" v-if="order.addressId">
-          Адрес доставки:
-          {{ addresses.find((item) => item.id === order.addressId).name }}
+        <p
+          class="order__address"
+          v-if="order.addressId"
+          data-test="order-address"
+        >
+          {{ addressStr(order.addressId) }}
         </p>
       </section>
     </div>
@@ -127,6 +138,11 @@ export default {
     }),
   },
   methods: {
+    addressStr(id) {
+      return `Адрес доставки: ${
+        this.addresses.find((item) => item.id === id).name
+      }`;
+    },
     productDough(value) {
       return value === "large" ? "на толстом тесте" : "на тонком тесте";
     },

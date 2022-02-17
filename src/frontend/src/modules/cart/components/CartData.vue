@@ -1,5 +1,9 @@
 <template>
-  <form class="layout-form" @submit.prevent="submitOrder">
+  <form
+    class="layout-form"
+    @submit.prevent="submitOrder"
+    data-test="form-order"
+  >
     <transition
       enter-active-class="animate__animated animate__fadeIn"
       leave-active-class="animate__animated animate__fadeOut"
@@ -24,8 +28,11 @@
           @selectAddress="selectAddress"
           @changeAddress="changeAddress"
           @changePhone="changePhone"
+          data-test="cart-delivery"
         />
-        {{ error }}
+        <div data-test="error" v-if="error">
+          {{ error }}
+        </div>
       </div>
     </main>
     <section class="footer">
@@ -34,6 +41,7 @@
           href="#"
           @click.prevent="editPizza"
           class="button button--border button--arrow"
+          data-test="edit-pizza"
         >
           Хочу еще одну
         </a>
