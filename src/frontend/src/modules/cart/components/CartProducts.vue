@@ -1,6 +1,12 @@
+
 <template>
   <ul class="cart-list sheet">
-    <li v-for="product in cartItems" :key="product.id" class="cart-list__item">
+    <li
+      v-for="product in cartItems"
+      :key="product.id"
+      class="cart-list__item"
+      data-test="cart-item"
+    >
       <div class="product cart-list__product">
         <img
           src="../../../assets/img/product.svg"
@@ -8,16 +14,20 @@
           width="56"
           height="56"
           :alt="product.name"
+          data-test="product-img"
         />
         <div class="product__text">
-          <h2>{{ product.name }}</h2>
+          <h2 data-test="product-name">{{ product.name }}</h2>
           <ul>
-            <li>
-              {{ product.sizes.name }},
-              {{ productDough(product.dough.value) }}
+            <li data-test="product-size">
+              {{
+                product.sizes.name + ", " + productDough(product.dough.value)
+              }}
             </li>
-            <li>Соус: {{ product.sauces.name }}</li>
-            <li>Начинка: {{ productIngredients(product.ingredients) }}</li>
+            <li data-test="product-sauce">Соус: {{ product.sauces.name }}</li>
+            <li data-test="product-ingredients">
+              Начинка: {{ productIngredients(product.ingredients) }}
+            </li>
           </ul>
         </div>
       </div>
@@ -27,6 +37,7 @@
           type="button"
           class="counter__button counter__button--minus"
           @click="decrement(product)"
+          data-test="button-minus"
         >
           <span class="visually-hidden">Меньше</span>
         </button>
@@ -35,17 +46,19 @@
           name="counter"
           class="counter__input"
           :value="product.qty"
+          data-test="product-counter"
         />
         <button
           type="button"
           class="counter__button counter__button--plus counter__button--orange"
           @click="increment(product)"
+          data-test="button-plus"
         >
           <span class="visually-hidden">Больше</span>
         </button>
       </div>
 
-      <div class="cart-list__price">
+      <div class="cart-list__price" data-test="product-price">
         <b>{{ formattedPrice(product.price * product.qty) }} ₽</b>
       </div>
 
@@ -54,6 +67,7 @@
           type="button"
           class="cart-list__edit"
           @click="changePizza(product)"
+          data-test="edit-product"
         >
           Изменить
         </button>

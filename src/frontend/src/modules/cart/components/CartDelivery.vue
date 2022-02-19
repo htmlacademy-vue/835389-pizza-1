@@ -5,6 +5,7 @@
         <span class="cart-form__label">Получение заказа:</span>
 
         <select
+          data-test="select-address"
           name="test"
           class="select"
           @change="selectAddress($event.target.value)"
@@ -29,10 +30,15 @@
           name="tel"
           placeholder="+7 999-999-99-99"
           :value="phone"
+          data-test="phone"
           @input="$emit('changePhone', $event.target.value)"
         />
       </label>
-      <div class="cart-form__address" v-if="delivery !== '1'">
+      <div
+        data-test="form-address"
+        class="cart-form__address"
+        v-if="delivery !== '1'"
+      >
         <span class="cart-form__label">Новый адрес:</span>
         <div class="cart-form__input">
           <label class="input">
@@ -43,6 +49,7 @@
               :value="address.street"
               @input="changeAddress($event.target.value, 'street')"
               :readonly="isUserAddress"
+              data-test="address-street"
             />
           </label>
         </div>
@@ -56,6 +63,7 @@
               :value="address.building"
               @input="changeAddress($event.target.value, 'building')"
               :readonly="isUserAddress"
+              data-test="address-building"
             />
           </label>
         </div>
@@ -69,6 +77,7 @@
               :value="address.flat"
               @input="changeAddress($event.target.value, 'flat')"
               :readonly="isUserAddress"
+              data-test="address-flat"
             />
           </label>
         </div>

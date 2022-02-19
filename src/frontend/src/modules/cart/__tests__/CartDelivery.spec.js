@@ -43,7 +43,7 @@ const createUser = (store) => {
 describe("CartData", () => {
   let wrapper;
   let store;
-  let listeners = { click: null };
+  let listeners = { input: null, submit: null, change: null };
 
   const createComponent = (options) => {
     wrapper = mount(CartDelivery, options);
@@ -51,7 +51,9 @@ describe("CartData", () => {
 
   beforeEach(() => {
     store = generateMockStore();
-    listeners.click = jest.fn();
+    listeners.input = jest.fn();
+    listeners.submit = jest.fn();
+    listeners.change = jest.fn();
     createUser(store);
     createComponent({ localVue, store });
   });
@@ -62,5 +64,78 @@ describe("CartData", () => {
 
   it("Component is rendered", () => {
     expect(wrapper.exists()).toBeTruthy();
+  });
+
+  it("Correct options address rendered", () => {
+    const select = wrapper.find("[data-test='select-address']");
+    const options = select.findAll("option");
+    expect(options).toHaveLength(addresses.length + 2);
+    for (let i = 2; i < addresses.length; i++) {
+      expect(options.at(i).element.value).toBe(
+        `address-${addresses[i - 2].id}`
+      );
+      expect(options.at(i).text()).toBe(addresses[i - 2].name);
+    }
+  });
+
+  it("Correct emitted address change", () => {
+    const select = wrapper.find("[data-test='select-address']");
+    select.trigger("change");
+    expect(wrapper.emitted("selectAddress")[0][0]).toEqual(
+      select.element.value
+    );
+  });
+
+  it("Correct user phone", () => {
+    const phone = wrapper.find("[data-test='phone']");
+    phone.trigger("input");
+    expect(wrapper.emitted("changePhone")[0][0]).toEqual(phone.element.value);
+  });
+
+  it("Correct address form rendered", async () => {
+    expect(wrapper.html()).not.toContain("[data-test='form-address']");
+    const select = wrapper.find("[data-test='select-address']");
+    const street = wrapper.find("[data-test='address-street']");
+    const building = wrapper.find("[data-test='address-building']");
+    const flat = wrapper.find("[data-test='address-flat']");
+    select.setValue("2");
+    expect(wrapper.find("[data-test='form-address']")).toBeTruthy();
+    select.setValue("3");
+    expect(street.attributes("readonly")).toBeTruthy();
+    expect(building.attributes("readonly")).toBeTruthy();
+    expect(flat.attributes("readonly")).toBeTruthy();
+  });
+
+  it("Change street", () => {
+    const select = wrapper.find("[data-test='select-address']");
+    const street = wrapper.find("[data-test='address-street']");
+    select.setValue("2");
+    street.trigger("input");
+    expect(wrapper.emitted("changeAddress")[0][0]).toEqual({
+      val: street.element.value,
+      field: "street",
+    });
+  });
+
+  it("Change house", () => {
+    const select = wrapper.find("[data-test='select-address']");
+    const building = wrapper.find("[data-test='address-building']");
+    select.setValue("2");
+    building.trigger("input");
+    expect(wrapper.emitted("changeAddress")[0][0]).toEqual({
+      val: building.element.value,
+      field: "building",
+    });
+  });
+
+  it("Change flat", () => {
+    const select = wrapper.find("[data-test='select-address']");
+    const flat = wrapper.find("[data-test='address-flat']");
+    select.setValue("2");
+    flat.trigger("input");
+    expect(wrapper.emitted("changeAddress")[0][0]).toEqual({
+      val: flat.element.value,
+      field: "flat",
+    });
   });
 });
