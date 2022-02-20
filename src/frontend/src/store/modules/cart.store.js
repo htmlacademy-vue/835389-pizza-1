@@ -71,7 +71,10 @@ export default {
     [CHANGE_MISC](state, item) {
       state.misc = state.misc.map((el) => {
         if (el.id === item.id) {
-          return { ...el, qty: item.qty };
+          return {
+            ...el,
+            qty: item.action === "decrement" ? item.qty - 1 : item.qty + 1,
+          };
         } else {
           return el;
         }

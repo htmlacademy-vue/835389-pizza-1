@@ -6,11 +6,12 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form @submit.prevent="login">
+    <form @submit.prevent="login" data-test="form-login">
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
           <input
+            data-test="email"
             type="email"
             name="email"
             placeholder="example@mail.ru"
@@ -23,6 +24,7 @@
         <label class="input">
           <span>Пароль</span>
           <input
+            data-test="password"
             type="password"
             name="pass"
             placeholder="***********"

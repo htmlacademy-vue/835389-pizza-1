@@ -1,6 +1,6 @@
 <template>
   <main class="layout">
-    <AppLayoutSidebar />
+    <AppLayoutSidebar data-test="sidebar" />
 
     <div class="layout__content">
       <div class="layout__title">
@@ -8,12 +8,19 @@
       </div>
 
       <div class="user">
-        <img :src="user.avatar" :alt="user.name" width="72" height="72" />
+        <img
+          data-test="avatar"
+          :src="user.avatar"
+          :alt="user.name"
+          width="72"
+          height="72"
+        />
         <div class="user__name">
-          <span>{{ user.name }}</span>
+          <span data-test="user-name">{{ user.name }}</span>
         </div>
         <p class="user__phone">
-          Контактный телефон: <span>{{ user.phone }}</span>
+          Контактный телефон:
+          <span data-test="user-phone">{{ user.phone }}</span>
         </p>
       </div>
 
@@ -22,11 +29,17 @@
           class="sheet address-form"
           v-for="(address, i) in addresses"
           :key="address.id"
+          data-test="user-address"
         >
           <div class="address-form__header">
             <b>Адрес №{{ i + 1 }}. {{ address.name }}</b>
             <div class="address-form__edit">
-              <button type="button" class="icon" @click="editAddress(address)">
+              <button
+                type="button"
+                class="icon"
+                @click="editAddress(address)"
+                data-test="change-address"
+              >
                 <span class="visually-hidden">Изменить адрес</span>
               </button>
             </div>
@@ -36,13 +49,18 @@
         </div>
       </div>
 
-      <div class="layout__address" v-if="isFormAddress">
+      <div
+        data-test="form-address"
+        class="layout__address"
+        v-if="isFormAddress"
+      >
         <form
           @submit.prevent="addAddress"
+          data-test="form"
           class="address-form address-form--opened sheet"
         >
           <div class="address-form__header">
-            <b>Адрес №{{ indexAddress }}</b>
+            <b data-test="index-address">Адрес №{{ indexAddress }}</b>
           </div>
 
           <div class="address-form__wrapper">
@@ -112,10 +130,13 @@
               class="button button--transparent"
               v-if="address.id"
               @click="deleteAddress"
+              data-test="delete-address"
             >
               Удалить
             </button>
-            <button type="submit" class="button">Сохранить</button>
+            <button type="submit" class="button" data-test="submit-address">
+              Сохранить
+            </button>
           </div>
         </form>
       </div>
@@ -125,6 +146,7 @@
           type="button"
           class="button button--border"
           @click="isFormAddress = true"
+          data-test="add-address"
         >
           Добавить новый адрес
         </button>
@@ -196,7 +218,7 @@ export default {
     },
     addAddress() {
       if (this.isValidAddress) {
-        if (this.address.id !== null) {
+        if (this.address.id) {
           this.$store.dispatch("Auth/changeAddress", this.address);
         } else {
           this.$store.dispatch("Auth/addAddress", this.address);

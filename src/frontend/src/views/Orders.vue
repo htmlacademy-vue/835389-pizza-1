@@ -1,24 +1,37 @@
 <template>
   <main class="layout">
-    <AppLayoutSidebar />
+    <AppLayoutSidebar data-test="sidebar" />
     <div class="layout__content">
       <div class="layout__title">
         <h1 class="title title--big">История заказов</h1>
       </div>
-      <section class="sheet order" v-for="order in orders" :key="order.id">
+      <section
+        class="sheet order"
+        data-test="order-item"
+        v-for="order in orders"
+        :key="order.id"
+      >
         <div class="order__wrapper">
           <div class="order__number">
-            <b>Заказ #{{ order.id }}</b>
+            <b data-test="order-id">Заказ #{{ order.id }}</b>
           </div>
 
           <div class="order__sum">
             <span>Сумма заказа: {{ orderPrice(order) }} ₽</span>
           </div>
 
-          <div class="order__button" @click="deleteOrder(order.id)">
+          <div
+            class="order__button"
+            @click="deleteOrder(order.id)"
+            data-test="delete-order"
+          >
             <button type="button" class="button button--border">Удалить</button>
           </div>
-          <div class="order__button" @click="repeatOrder(order)">
+          <div
+            class="order__button"
+            @click="repeatOrder(order)"
+            data-test="repeat-order"
+          >
             <button type="button" class="button">Повторить</button>
           </div>
         </div>
@@ -28,6 +41,7 @@
             class="order__item"
             v-for="pizza in order.orderPizzas"
             :key="pizza.id"
+            data-test="order-pizza-item"
           >
             <div class="product">
               <img
@@ -36,21 +50,30 @@
                 width="56"
                 height="56"
                 :alt="pizza.name"
+                data-test="product-img"
               />
               <div class="product__text">
-                <h2>{{ pizza.name }}</h2>
+                <h2 data-test="product-name">{{ pizza.name }}</h2>
                 <ul>
                   <li>
-                    {{ pizza.sizes.name }},
-                    {{ productDough(pizza.dough.value) }}
+                    <span data-test="product-size">
+                      {{ pizza.sizes.name }}
+                    </span>,
+                    <span data-test="product-dough">
+                      {{ productDough(pizza.dough.value) }}
+                    </span>
                   </li>
-                  <li>Соус: {{ pizza.sauces.name }}</li>
-                  <li>Начинка: {{ productIngredients(pizza.ingredients) }}</li>
+                  <li data-test="product-sauce">
+                    Соус: {{ pizza.sauces.name }}
+                  </li>
+                  <li data-test="product-ingredients">
+                    Начинка: {{ productIngredients(pizza.ingredients) }}
+                  </li>
                 </ul>
               </div>
             </div>
 
-            <p class="order__price">
+            <p class="order__price" data-test="product-price">
               <template v-if="pizza.quantity > 1">
                 {{ pizza.quantity }} х
               </template>
@@ -60,11 +83,21 @@
         </ul>
 
         <ul class="order__additional">
-          <li v-for="misc in order.orderMisc" :key="misc.id">
-            <img :src="misc.image" width="20" height="30" :alt="misc.name" />
+          <li
+            v-for="misc in order.orderMisc"
+            :key="misc.id"
+            data-test="misc-item"
+          >
+            <img
+              :src="misc.image"
+              width="20"
+              height="30"
+              :alt="misc.name"
+              data-test="misc-img"
+            />
             <p>
-              <span>{{ misc.name }}</span>
-              <b>
+              <span data-test="misc-name">{{ misc.name }}</span>
+              <b data-test="misc-price">
                 <template v-if="misc.quantity > 1">
                   {{ misc.quantity }} х
                 </template>
@@ -74,9 +107,12 @@
           </li>
         </ul>
 
-        <p class="order__address" v-if="order.addressId">
-          Адрес доставки:
-          {{ addresses.find((item) => item.id === order.addressId).name }}
+        <p
+          class="order__address"
+          v-if="order.addressId"
+          data-test="order-address"
+        >
+          {{ addressStr(order.addressId) }}
         </p>
       </section>
     </div>
@@ -102,6 +138,11 @@ export default {
     }),
   },
   methods: {
+    addressStr(id) {
+      return `Адрес доставки: ${
+        this.addresses.find((item) => item.id === id).name
+      }`;
+    },
     productDough(value) {
       return value === "large" ? "на толстом тесте" : "на тонком тесте";
     },

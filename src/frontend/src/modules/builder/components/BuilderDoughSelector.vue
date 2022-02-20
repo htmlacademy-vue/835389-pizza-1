@@ -11,6 +11,7 @@
           name="dought"
           :input="item"
           :checked="item.id === currentPizza.dough.id"
+          data-test="dough-radio-button"
         />
       </div>
     </div>
