@@ -35,7 +35,7 @@ describe("SelectorItem", () => {
 
   it("text content is props item.name", async () => {
     createComponent({ propsData });
-    expect(wrapper.find("span").element.textContent.trim()).toBe(
+    expect(wrapper.find("span").text()).toBe(
       propsData.item.name.trim()
     );
   });

@@ -3,7 +3,6 @@ import ItemCounter from "../ItemCounter";
 
 // Указываем название блока тестов — соответствует названию компонента.
 describe("ItemCounter", () => {
-  const propsData = { count: 2, id: 1 };
   const listeners = { click: null };
 
   let wrapper;
@@ -21,12 +20,13 @@ describe("ItemCounter", () => {
   });
 
   it("input value is count", async () => {
+    const propsData = { count: 2, id: 1 };
     createComponent({ propsData });
-
     expect(wrapper.find("input").element.value).toBe("2");
   });
 
   it("emit before click on plus", async () => {
+    const propsData = { count: 2, id: 1 };
     createComponent({ propsData });
     await wrapper.find(".counter__button--plus").trigger("click");
 
@@ -35,6 +35,7 @@ describe("ItemCounter", () => {
   });
 
   it("emit before click on minus", async () => {
+    const propsData = { count: 2, id: 1 };
     createComponent({ propsData });
     await wrapper.find(".counter__button--minus").trigger("click");
 
@@ -43,7 +44,7 @@ describe("ItemCounter", () => {
   });
 
   it("disabled button plus if count === 3", async () => {
-    propsData.count = 3;
+    const propsData = { count: 3, id: 1 };
     createComponent({ propsData });
     expect(
       wrapper.find(".counter__button--plus").attributes("disabled")
@@ -51,7 +52,7 @@ describe("ItemCounter", () => {
   });
 
   it("disabled button minus if count === 0", async () => {
-    propsData.count = 0;
+    const propsData = { count: 0, id: 1 };
     createComponent({ propsData });
     expect(
       wrapper.find(".counter__button--minus").attributes("disabled")

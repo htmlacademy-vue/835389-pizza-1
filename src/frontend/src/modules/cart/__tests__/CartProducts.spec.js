@@ -14,12 +14,14 @@ import misc from "../../../static/misc.json";
 
 const cartItems = [
   {
+    fullPrice: "467 ₽",
     name: "любимка",
     qty: 1,
     id: "3",
     price: 455,
     sizes: normalizePizza(pizza.sizes[0], PIZZA_SIZES),
     dough: normalizePizza(pizza.dough[0], PIZZA_DOUGH),
+    doughStr: "на тонком тесте",
     sauces: normalizePizza(pizza.sauces[0], PIZZA_SAUSES),
     ingredients: pizza.ingredients.slice(0, 3).map((item) => {
       let normalizeIngredient = normalizePizza(
@@ -114,9 +116,7 @@ describe("CartProducts", () => {
         item.name
       );
       expect(products.at(ind).find("[data-test='product-size']").text()).toBe(
-        `${item.sizes.name}, ${
-          item.dough.value === "large" ? "на толстом тесте" : "на тонком тесте"
-        }`
+        `${item.sizes.name}, ${item.doughStr}`
       );
       expect(products.at(ind).find("[data-test='product-sauce']").text()).toBe(
         `Соус: ${item.sauces.name}`
@@ -130,7 +130,7 @@ describe("CartProducts", () => {
         products.at(ind).find("[data-test='product-counter']").element.value
       ).toBe(String(item.qty));
       expect(products.at(ind).find("[data-test='product-price']").text()).toBe(
-        `${item.price * item.qty} ₽`
+        item.fullPrice
       );
     });
   });

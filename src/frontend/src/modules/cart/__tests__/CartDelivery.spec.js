@@ -110,9 +110,10 @@ describe("CartData", () => {
     const select = wrapper.find("[data-test='select-address']");
     const street = wrapper.find("[data-test='address-street']");
     select.setValue("2");
+    street.setValue("Street");
     street.trigger("input");
     expect(wrapper.emitted("changeAddress")[0][0]).toEqual({
-      val: street.element.value,
+      val: "Street",
       field: "street",
     });
   });
@@ -121,9 +122,10 @@ describe("CartData", () => {
     const select = wrapper.find("[data-test='select-address']");
     const building = wrapper.find("[data-test='address-building']");
     select.setValue("2");
+    building.setValue("Building");
     building.trigger("input");
     expect(wrapper.emitted("changeAddress")[0][0]).toEqual({
-      val: building.element.value,
+      val: "Building",
       field: "building",
     });
   });
@@ -132,9 +134,10 @@ describe("CartData", () => {
     const select = wrapper.find("[data-test='select-address']");
     const flat = wrapper.find("[data-test='address-flat']");
     select.setValue("2");
+    flat.setValue("Flat");
     flat.trigger("input");
     expect(wrapper.emitted("changeAddress")[0][0]).toEqual({
-      val: flat.element.value,
+      val: "Flat",
       field: "flat",
     });
   });
