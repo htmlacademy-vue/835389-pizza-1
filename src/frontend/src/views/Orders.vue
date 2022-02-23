@@ -57,8 +57,8 @@
                 <ul>
                   <li>
                     <span data-test="product-size">
-                      {{ pizza.sizes.name }}
-                    </span>,
+                      {{ pizza.sizes.name }} </span
+                    >,
                     <span data-test="product-dough">
                       {{ productDough(pizza.dough.value) }}
                     </span>

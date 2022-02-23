@@ -1,4 +1,3 @@
-
 <template>
   <ul class="cart-list sheet">
     <li
