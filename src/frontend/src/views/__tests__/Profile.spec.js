@@ -1,3 +1,4 @@
+require("babel-plugin-require-context-hook/register")();
 import { mount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Profile from "../Profile";
