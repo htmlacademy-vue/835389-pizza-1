@@ -73,7 +73,7 @@ export default {
         if (el.id === item.id) {
           return {
             ...el,
-            qty: item.action === "decrement" ? item.qty - 1 : item.qty + 1,
+            qty: item.action === "decrement" ? el.qty - 1 : el.qty + 1,
           };
         } else {
           return el;
