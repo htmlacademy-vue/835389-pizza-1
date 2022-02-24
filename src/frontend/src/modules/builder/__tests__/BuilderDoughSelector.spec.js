@@ -68,9 +68,7 @@ describe("BuilderDoughSelector", () => {
   });
 
   it("Dough radio-buttons component is renderer", () => {
-    const doughComponents = wrapper.findAll(
-      "[data-test='dough-radio-button']"
-    );
+    const doughComponents = wrapper.findAll("[data-test='dough-radio-button']");
     expect(doughComponents).toHaveLength(dough.length);
     dough.forEach((item, ind) => {
       expect(doughComponents.at(ind).props("input")).toBe(item);

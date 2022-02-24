@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart">{{ formattedPrice }} ₽</router-link>
+      <router-link to="/cart"> {{ formattedPrice }} ₽ </router-link>
     </div>
     <div v-if="isAuthenticated" class="header__user">
       <router-link to="/profile">
@@ -39,18 +39,25 @@ import logout from "../common/mixins/logout";
 
 export default {
   name: "AppLayoutHeader",
+
   mixins: [logout],
+
   computed: {
     ...mapGetters("Cart", {
       price: "price",
     }),
+
     ...mapState("Auth", {
       isAuthenticated: "isAuthenticated",
       user: "user",
     }),
+
     formattedPrice() {
       return formattedPrice(this.price);
     },
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/logo";
+</style>

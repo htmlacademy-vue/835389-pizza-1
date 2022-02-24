@@ -15,6 +15,7 @@
 import { DATA_TRANSFER_PAYLOAD, MOVE } from "../constants";
 export default {
   name: "SelectorItem",
+
   props: {
     item: {
       type: Object,
@@ -23,11 +24,13 @@ export default {
       },
     },
   },
+
   computed: {
     isDraggable() {
       return !this.item.count || (this.item.count && this.item.count < 3);
     },
   },
+
   methods: {
     onDrag({ dataTransfer }) {
       dataTransfer.effectAllowed = MOVE;
@@ -37,3 +40,6 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/filling.scss";
+</style>

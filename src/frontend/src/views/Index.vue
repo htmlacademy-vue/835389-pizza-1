@@ -20,6 +20,7 @@ import BuilderPizzaView from "../modules/builder/components/BuilderPizzaView";
 
 export default {
   name: "Index",
+
   components: {
     BuilderPizzaView,
     BuilderIngredientsSelector,

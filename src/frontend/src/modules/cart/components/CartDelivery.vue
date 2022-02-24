@@ -13,12 +13,12 @@
           <option value="1" :selected="delivery === '1'">Заберу сам</option>
           <option value="2" :selected="delivery === '2'">Новый адрес</option>
           <option
-            v-for="address in addresses"
-            :key="`address-${address.id}`"
-            :value="`address-${address.id}`"
-            :selected="delivery === `address-${address.id}`"
+            v-for="item_address in addresses"
+            :key="`address-${item_address.id}`"
+            :value="`address-${item_address.id}`"
+            :selected="delivery === `address-${item_address.id}`"
           >
-            {{ address.name }}
+            {{ item_address.name }}
           </option>
         </select>
       </label>
@@ -35,9 +35,9 @@
         />
       </label>
       <div
+        v-if="delivery !== '1'"
         data-test="form-address"
         class="cart-form__address"
-        v-if="delivery !== '1'"
       >
         <span class="cart-form__label">Новый адрес:</span>
         <div class="cart-form__input">
@@ -47,9 +47,9 @@
               type="text"
               name="street"
               :value="address.street"
-              @input="changeAddress($event.target.value, 'street')"
               :readonly="isUserAddress"
               data-test="address-street"
+              @input="changeAddress($event.target.value, 'street')"
             />
           </label>
         </div>
@@ -61,9 +61,9 @@
               type="text"
               name="house"
               :value="address.building"
-              @input="changeAddress($event.target.value, 'building')"
               :readonly="isUserAddress"
               data-test="address-building"
+              @input="changeAddress($event.target.value, 'building')"
             />
           </label>
         </div>
@@ -75,9 +75,9 @@
               type="text"
               name="apartment"
               :value="address.flat"
-              @input="changeAddress($event.target.value, 'flat')"
               :readonly="isUserAddress"
               data-test="address-flat"
+              @input="changeAddress($event.target.value, 'flat')"
             />
           </label>
         </div>
@@ -91,6 +91,7 @@ import { mapState } from "vuex";
 
 export default {
   name: "CartDelivery",
+
   props: {
     delivery: {
       type: String,
@@ -98,12 +99,14 @@ export default {
         return "";
       },
     },
+
     address: {
       type: Object,
       default() {
         return {};
       },
     },
+
     phone: {
       type: String,
       default() {
@@ -111,21 +114,29 @@ export default {
       },
     },
   },
+
   computed: {
     ...mapState("Auth", {
       addresses: "addresses",
     }),
+
     isUserAddress() {
       return this.delivery !== "1" && this.delivery !== "2";
     },
   },
+
   methods: {
     selectAddress(val) {
       this.$emit("selectAddress", val);
     },
+
     changeAddress(val, field) {
       this.$emit("changeAddress", { val, field });
     },
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/cart-form";
+@import "~@/assets/scss/blocks/tel-form";
+</style>

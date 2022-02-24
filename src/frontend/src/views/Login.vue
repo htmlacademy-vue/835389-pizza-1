@@ -6,16 +6,16 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form @submit.prevent="login" data-test="form-login">
+    <form data-test="form-login" @submit.prevent="login">
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
           <input
+            v-model="form.email"
             data-test="email"
             type="email"
             name="email"
             placeholder="example@mail.ru"
-            v-model="form.email"
           />
         </label>
       </div>
@@ -24,11 +24,11 @@
         <label class="input">
           <span>Пароль</span>
           <input
+            v-model="form.password"
             data-test="password"
             type="password"
             name="pass"
             placeholder="***********"
-            v-model="form.password"
           />
         </label>
       </div>
@@ -38,8 +38,13 @@
 </template>
 
 <script>
+import { isLoggedIn } from "@/middlewares";
+
 export default {
   name: "Login",
+
+  middlewares: [isLoggedIn],
+
   data() {
     return {
       form: {
@@ -48,6 +53,7 @@ export default {
       },
     };
   },
+
   methods: {
     async login() {
       if (this.form.email.length && this.form.password.length) {

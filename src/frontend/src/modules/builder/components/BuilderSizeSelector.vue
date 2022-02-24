@@ -7,11 +7,11 @@
           v-for="size in pizza.sizes"
           :key="`size-${size.id}`"
           :input="size"
-          @change="changeSize"
           :class-name="`diameter__input diameter__input--${size.value}`"
           :name="'diameter'"
           :checked="size.id === currentPizza.sizes.id"
           data-test="size-radio-button"
+          @change="changeSize"
         />
       </div>
     </div>
@@ -23,15 +23,18 @@ import { mapState } from "vuex";
 import RadioButton from "../../../common/components/RadioButton";
 export default {
   name: "BuilderSizeSelector",
+
   components: {
     RadioButton,
   },
+
   computed: {
     ...mapState("Builder", {
       pizza: "pizza",
       currentPizza: "currentPizza",
     }),
   },
+
   methods: {
     changeSize(id) {
       this.$store.dispatch("Builder/changePizza", { name: "sizes", id });

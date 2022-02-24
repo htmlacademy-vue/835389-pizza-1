@@ -1,4 +1,3 @@
-
 <template>
   <ul class="cart-list sheet">
     <li
@@ -17,7 +16,9 @@
           data-test="product-img"
         />
         <div class="product__text">
-          <h2 data-test="product-name">{{ product.name }}</h2>
+          <h2 data-test="product-name">
+            {{ product.name }}
+          </h2>
           <ul>
             <li data-test="product-size">
               {{
@@ -36,8 +37,8 @@
         <button
           type="button"
           class="counter__button counter__button--minus"
-          @click="decrement(product)"
           data-test="button-minus"
+          @click="decrement(product)"
         >
           <span class="visually-hidden">Меньше</span>
         </button>
@@ -51,8 +52,8 @@
         <button
           type="button"
           class="counter__button counter__button--plus counter__button--orange"
-          @click="increment(product)"
           data-test="button-plus"
+          @click="increment(product)"
         >
           <span class="visually-hidden">Больше</span>
         </button>
@@ -66,8 +67,8 @@
         <button
           type="button"
           class="cart-list__edit"
-          @click="changePizza(product)"
           data-test="edit-product"
+          @click="changePizza(product)"
         >
           Изменить
         </button>
@@ -82,34 +83,41 @@ import { formattedPrice } from "../../../common/helpers";
 
 export default {
   name: "CartProducts",
+
   computed: {
     ...mapState("Cart", {
       cartItems: "cartItems",
     }),
   },
+
   methods: {
     productDough(value) {
       return value === "large" ? "на толстом тесте" : "на тонком тесте";
     },
+
     productIngredients(items) {
       let ingredients = items.map((item) => item.name);
       return ingredients.join(", ");
     },
+
     formattedPrice(price) {
       return formattedPrice(price);
     },
+
     increment(product) {
       this.$store.dispatch("Cart/changeCart", {
         ...product,
         qty: product.qty + 1,
       });
     },
+
     decrement(product) {
       this.$store.dispatch("Cart/changeCart", {
         ...product,
         qty: product.qty - 1,
       });
     },
+
     changePizza(product) {
       this.$store.dispatch("Builder/setPizza", product);
       this.$router.push("/");
@@ -117,3 +125,7 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/cart-list";
+@import "~@/assets/scss/blocks/product";
+</style>

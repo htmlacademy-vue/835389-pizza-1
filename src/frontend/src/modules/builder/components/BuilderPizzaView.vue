@@ -5,10 +5,10 @@
       <input
         type="text"
         name="pizza_name"
-        @input="changeName($event.target.value)"
         :value="currentPizza.name"
         placeholder="Введите название пиццы"
         data-test="input-pizza-name"
+        @input="changeName($event.target.value)"
       />
     </label>
 
@@ -26,26 +26,26 @@
             leave-active-class="animate__animated animate__zoomOut"
           >
             <template
-              data-test="pizza-ingredient"
               v-for="ingredient in currentPizza.ingredients"
+              data-test="pizza-ingredient"
             >
               <div
                 :key="`view-ingredient-${ingredient.id}`"
                 class="pizza__filling"
                 :class="`pizza__filling--${ingredient.value}`"
-              ></div>
+              />
               <div
                 v-if="ingredient.count > 1"
                 :key="`view-ingredient-second-${ingredient.id}`"
                 class="pizza__filling pizza__filling--second"
                 :class="`pizza__filling--${ingredient.value}`"
-              ></div>
+              />
               <div
                 v-if="ingredient.count > 2"
                 :key="`view-ingredient-third-${ingredient.id}`"
                 class="pizza__filling pizza__filling--third"
                 :class="`pizza__filling--${ingredient.value}`"
-              ></div>
+              />
             </template>
           </transition-group>
         </div>
@@ -80,32 +80,39 @@ import { formattedPrice } from "../../../common/helpers";
 
 export default {
   name: "BuilderPizzaView",
+
   computed: {
     ...mapGetters("Builder", {
       pizzaPrice: "pizzaPrice",
     }),
+
     ...mapState("Builder", {
       currentPizza: "currentPizza",
     }),
+
     formattedPrice() {
       return formattedPrice(this.pizzaPrice);
     },
+
     isDisabled() {
       return (
         !this.currentPizza.name.length || !this.currentPizza.ingredients.length
       );
     },
+
     pizzaClass() {
       return `pizza--foundation--${
         this.currentPizza.dough.value === "light" ? "small" : "big"
       }-${this.currentPizza.sauces.value}`;
     },
   },
+
   methods: {
     setCart() {
       this.$store.dispatch("Cart/addCart", this.currentPizza);
       this.$router.push("/cart");
     },
+
     onDrop({ dataTransfer }) {
       if (!dataTransfer) {
         return;
@@ -118,16 +125,22 @@ export default {
         this.addIngredient(transferData);
       }
     },
+
     addIngredient(ingredient) {
       const count = ingredient.count ? ingredient.count + 1 : 1;
       this.setIngredient(ingredient.id, count);
     },
+
     setIngredient(id, count) {
       this.$store.dispatch("Builder/changeIngredients", { id, count });
     },
+
     changeName(name) {
       this.$store.dispatch("Builder/changePizzaName", name);
     },
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/pizza";
+</style>
