@@ -5,8 +5,8 @@
       :name="name"
       :value="input.value"
       :checked="checked"
-      @change="$emit('change', input.id)"
       class="visually-hidden"
+      @change="$emit('change', input.id)"
     />
     <template v-if="input.description">
       <b data-test="name">{{ input.name }}</b>
@@ -19,6 +19,7 @@
 <script>
 export default {
   name: "RadioButton",
+
   props: {
     input: {
       type: Object,
@@ -26,18 +27,21 @@ export default {
         return {};
       },
     },
+
     className: {
       type: String,
       default() {
         return "";
       },
     },
+
     name: {
       type: String,
       default() {
         return "";
       },
     },
+
     checked: {
       type: Boolean,
       default() {
@@ -47,3 +51,9 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/radio";
+@import "~@/assets/scss/blocks/counter";
+@import "~@/assets/scss/blocks/dough";
+@import "~@/assets/scss/blocks/diameter";
+</style>

@@ -6,10 +6,10 @@
         <h1 class="title title--big">История заказов</h1>
       </div>
       <section
-        class="sheet order"
-        data-test="order-item"
         v-for="order in orders"
         :key="order.id"
+        class="sheet order"
+        data-test="order-item"
       >
         <div class="order__wrapper">
           <div class="order__number">
@@ -22,15 +22,15 @@
 
           <div
             class="order__button"
-            @click="deleteOrder(order.id)"
             data-test="delete-order"
+            @click="deleteOrder(order.id)"
           >
             <button type="button" class="button button--border">Удалить</button>
           </div>
           <div
             class="order__button"
-            @click="repeatOrder(order)"
             data-test="repeat-order"
+            @click="repeatOrder(order)"
           >
             <button type="button" class="button">Повторить</button>
           </div>
@@ -38,9 +38,9 @@
 
         <ul class="order__list">
           <li
-            class="order__item"
             v-for="pizza in order.orderPizzas"
             :key="pizza.id"
+            class="order__item"
             data-test="order-pizza-item"
           >
             <div class="product">
@@ -53,7 +53,9 @@
                 data-test="product-img"
               />
               <div class="product__text">
-                <h2 data-test="product-name">{{ pizza.name }}</h2>
+                <h2 data-test="product-name">
+                  {{ pizza.name }}
+                </h2>
                 <ul>
                   <li>
                     <span data-test="product-size">
@@ -108,8 +110,8 @@
         </ul>
 
         <p
-          class="order__address"
           v-if="order.addressId"
+          class="order__address"
           data-test="order-address"
         >
           {{ addressStr(order.addressId) }}
@@ -123,36 +125,51 @@
 import { mapGetters, mapState } from "vuex";
 import AppLayoutSidebar from "../layouts/AppLayoutSidebar";
 import { uniqueId } from "lodash";
+
 export default {
   name: "Orders",
+
   components: { AppLayoutSidebar },
+
   computed: {
     ...mapGetters("Orders", {
       orders: "formattedOrders",
     }),
+
     ...mapState("Cart", {
       misc: "misc",
     }),
+
     ...mapState("Auth", {
       addresses: "addresses",
     }),
   },
+
+  created() {
+    this.$store.dispatch("Orders/getOrders");
+    this.$store.dispatch("Auth/getAddresses");
+  },
+
   methods: {
     addressStr(id) {
       return `Адрес доставки: ${
         this.addresses.find((item) => item.id === id).name
       }`;
     },
+
     productDough(value) {
       return value === "large" ? "на толстом тесте" : "на тонком тесте";
     },
+
     productIngredients(items) {
       let ingredients = items.map((item) => item.name);
       return ingredients.join(", ");
     },
+
     deleteOrder(id) {
       this.$store.dispatch("Orders/deleteOrder", id);
     },
+
     repeatOrder(order) {
       let cartItems = order.orderPizzas.map((item) => {
         return {
@@ -190,6 +207,7 @@ export default {
       this.$store.dispatch("Cart/setCart", { cartItems, miscItems });
       this.$router.push("/cart");
     },
+
     orderPrice(order) {
       let pizzasPrice = order.orderPizzas.reduce((sum, item) => {
         return sum + item.quantity * item.pricePizza;
@@ -203,9 +221,8 @@ export default {
       return miscPrice + pizzasPrice;
     },
   },
-  created() {
-    this.$store.dispatch("Orders/getOrders");
-    this.$store.dispatch("Auth/getAddresses");
-  },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/order";
+</style>

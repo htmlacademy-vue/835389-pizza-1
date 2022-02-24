@@ -34,4 +34,6 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/scss/app";
+@import "~@/assets/scss/blocks/title.scss";
+@import "~@/assets/scss/blocks/button.scss";
 </style>

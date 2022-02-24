@@ -1,16 +1,16 @@
 <template>
   <form
     class="layout-form"
-    @submit.prevent="submitOrder"
     data-test="form-order"
+    @submit.prevent="submitOrder"
   >
     <transition
       enter-active-class="animate__animated animate__fadeIn"
       leave-active-class="animate__animated animate__fadeOut"
     >
       <CartModal
-        data-test="cart-modal"
         v-if="isModalOrder"
+        data-test="cart-modal"
         @close="closeModal"
       />
     </transition>
@@ -25,12 +25,12 @@
           :phone="phone"
           :address="address"
           :delivery="delivery"
+          data-test="cart-delivery"
           @selectAddress="selectAddress"
           @changeAddress="changeAddress"
           @changePhone="changePhone"
-          data-test="cart-delivery"
         />
-        <div data-test="error" v-if="error">
+        <div v-if="error" data-test="error">
           {{ error }}
         </div>
       </div>
@@ -39,9 +39,9 @@
       <div class="footer__more">
         <a
           href="#"
-          @click.prevent="editPizza"
           class="button button--border button--arrow"
           data-test="edit-pizza"
+          @click.prevent="editPizza"
         >
           Хочу еще одну
         </a>
@@ -71,7 +71,9 @@ import CartDelivery from "./CartDelivery";
 
 export default {
   name: "CartData",
+
   components: { CartDelivery, CartMisc, CartProducts, CartModal },
+
   data() {
     return {
       isModalOrder: false,
@@ -85,26 +87,38 @@ export default {
       error: "",
     };
   },
+
   computed: {
     ...mapState("Cart", {
       cartItems: "cartItems",
       misc: "misc",
     }),
+
     ...mapState("Builder", {
       pizza: "pizza",
     }),
+
     ...mapState("Auth", {
       user: "user",
       isAuthenticated: "isAuthenticated",
       addresses: "addresses",
     }),
+
     ...mapGetters("Cart", {
       price: "price",
     }),
+
     isUserAddress() {
       return this.delivery !== "1" && this.delivery !== "2";
     },
   },
+
+  created() {
+    this.$store.dispatch("Auth/getAddresses");
+
+    this.setPhone();
+  },
+
   methods: {
     selectAddress(val) {
       this.delivery = val;
@@ -119,15 +133,19 @@ export default {
         };
       }
     },
+
     changeAddress(data) {
       this.address[data.field] = data.val;
     },
+
     changePhone(val) {
       this.phone = val;
     },
+
     formattedPrice(price) {
       return formattedPrice(price);
     },
+
     newPizza() {
       let product = {
         dough: this.pizza.dough[0],
@@ -141,10 +159,12 @@ export default {
       };
       this.$store.dispatch("Builder/setPizza", product);
     },
+
     editPizza() {
       this.newPizza();
       this.$router.push("/");
     },
+
     submitOrder() {
       if (
         this.delivery !== "1" &&
@@ -192,6 +212,7 @@ export default {
         }
       });
     },
+
     closeModal() {
       this.$store.dispatch("Cart/deleteCart");
       this.isModalOrder = !this.isModalOrder;
@@ -201,15 +222,17 @@ export default {
         this.$router.push("/");
       }
     },
+
     setPhone() {
       if (this.isAuthenticated) {
         this.phone = this.user.phone;
       }
     },
   },
-  created() {
-    this.$store.dispatch("Auth/getAddresses");
-    this.setPhone();
-  },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/cart";
+@import "~@/assets/scss/blocks/select";
+@import "~@/assets/scss/blocks/footer";
+</style>

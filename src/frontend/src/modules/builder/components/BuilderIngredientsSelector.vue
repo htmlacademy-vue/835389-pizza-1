@@ -11,9 +11,9 @@
             :input="sauce"
             :class-name="'radio ingredients__input'"
             name="sauce"
-            @change="changeSauce"
             :checked="sauce.id === currentPizza.sauces.id"
             data-test="sauce-radio-button"
+            @change="changeSauce"
           />
         </div>
         <div class="ingredients__filling">
@@ -26,10 +26,10 @@
             >
               <SelectorItem :item="ingredient" data-test="selector-item" />
               <ItemCounter
-                :count="ingredient.count"
                 :id="ingredient.id"
-                @change-count="changeIngredient"
+                :count="ingredient.count"
                 data-test="item-counter"
+                @change-count="changeIngredient"
               />
             </li>
           </ul>
@@ -46,24 +46,31 @@ import SelectorItem from "../../../common/components/SelectorItem";
 import RadioButton from "../../../common/components/RadioButton";
 export default {
   name: "BuilderIngredientsSelector",
+
   components: {
     RadioButton,
     SelectorItem,
     ItemCounter,
   },
+
   computed: {
     ...mapState("Builder", {
       pizza: "pizza",
       currentPizza: "currentPizza",
     }),
   },
+
   methods: {
     changeSauce(id) {
       this.$store.dispatch("Builder/changePizza", { name: "sauces", id });
     },
+
     changeIngredient(id, count) {
       this.$store.dispatch("Builder/changeIngredients", { id, count });
     },
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/ingredients";
+</style>

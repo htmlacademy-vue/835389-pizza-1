@@ -1,7 +1,7 @@
 <template>
   <div>
-    <CartData data-test="cart-data" v-if="cartItems.length" />
-    <CartEmpty data-test="cart-empty" v-else />
+    <CartData v-if="cartItems.length" data-test="cart-data" />
+    <CartEmpty v-else data-test="cart-empty" />
   </div>
 </template>
 
@@ -12,7 +12,9 @@ import CartEmpty from "../modules/cart/components/CartEmpty";
 
 export default {
   name: "Cart",
+
   components: { CartEmpty, CartData },
+
   computed: {
     ...mapState("Cart", {
       cartItems: "cartItems",

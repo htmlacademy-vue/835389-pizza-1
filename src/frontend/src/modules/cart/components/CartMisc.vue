@@ -24,8 +24,8 @@
               type="button"
               class="counter__button counter__button--minus"
               :disabled="el.qty < 1"
-              @click="changeMisc(el.id, 'decrement')"
               data-test="misc-button-minus"
+              @click="changeMisc(el.id, 'decrement')"
             >
               <span class="visually-hidden">Меньше</span>
             </button>
@@ -42,8 +42,8 @@
               class="
                 counter__button counter__button--plus counter__button--orange
               "
-              @click="changeMisc(el.id, 'increment')"
               data-test="misc-button-plus"
+              @click="changeMisc(el.id, 'increment')"
             >
               <span class="visually-hidden">Больше</span>
             </button>
@@ -63,11 +63,13 @@ import { mapState } from "vuex";
 
 export default {
   name: "CartMisc",
+
   computed: {
     ...mapState("Cart", {
       misc: "misc",
     }),
   },
+
   methods: {
     changeMisc(id, action) {
       if (this.misc.find((el) => el.id === id).qty >= 0) {
@@ -77,3 +79,6 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/additional-list";
+</style>

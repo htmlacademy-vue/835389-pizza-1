@@ -30,3 +30,6 @@ export default {
   name: "CartModal",
 };
 </script>
+<style lang="scss">
+@import "~@/assets/scss/blocks/close";
+</style>

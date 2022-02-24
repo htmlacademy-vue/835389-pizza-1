@@ -29,6 +29,7 @@
 <script>
 export default {
   name: "ItemCounter",
+
   props: {
     count: {
       type: Number,
@@ -36,6 +37,7 @@ export default {
         return 0;
       },
     },
+
     id: {
       type: Number,
       default() {
@@ -43,6 +45,7 @@ export default {
       },
     },
   },
+
   methods: {
     changeCount(count) {
       if (count > 0) {
