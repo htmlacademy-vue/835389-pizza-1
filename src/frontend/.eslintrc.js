@@ -8,7 +8,6 @@ module.exports = {
     "plugin:vue/strongly-recommended",
     "plugin:vue/recommended",
     "eslint:recommended",
-    "@vue/prettier",
   ],
   parserOptions: {
     parser: "babel-eslint",

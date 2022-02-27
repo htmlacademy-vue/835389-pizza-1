@@ -10,8 +10,14 @@
           class="select"
           @change="selectAddress($event.target.value)"
         >
-          <option value="1" :selected="delivery === '1'">Заберу сам</option>
-          <option value="2" :selected="delivery === '2'">Новый адрес</option>
+          <option
+            value="1"
+            :selected="delivery === '1'"
+          >Заберу сам</option>
+          <option
+            value="2"
+            :selected="delivery === '2'"
+          >Новый адрес</option>
           <option
             v-for="item_address in addresses"
             :key="`address-${item_address.id}`"
@@ -32,7 +38,7 @@
           :value="phone"
           data-test="phone"
           @input="$emit('changePhone', $event.target.value)"
-        />
+        >
       </label>
       <div
         v-if="delivery !== '1'"
@@ -50,7 +56,7 @@
               :readonly="isUserAddress"
               data-test="address-street"
               @input="changeAddress($event.target.value, 'street')"
-            />
+            >
           </label>
         </div>
 
@@ -64,7 +70,7 @@
               :readonly="isUserAddress"
               data-test="address-building"
               @input="changeAddress($event.target.value, 'building')"
-            />
+            >
           </label>
         </div>
 
@@ -78,7 +84,7 @@
               :readonly="isUserAddress"
               data-test="address-flat"
               @input="changeAddress($event.target.value, 'flat')"
-            />
+            >
           </label>
         </div>
       </div>

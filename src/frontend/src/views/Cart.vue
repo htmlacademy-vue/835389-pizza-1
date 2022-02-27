@@ -1,7 +1,13 @@
 <template>
   <div>
-    <CartData v-if="cartItems.length" data-test="cart-data" />
-    <CartEmpty v-else data-test="cart-empty" />
+    <CartData
+      v-if="cartItems.length"
+      data-test="cart-data"
+    />
+    <CartEmpty
+      v-else
+      data-test="cart-empty"
+    />
   </div>
 </template>
 

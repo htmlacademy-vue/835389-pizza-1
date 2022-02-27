@@ -17,7 +17,9 @@
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
-          <h1 class="title title--big">Корзина</h1>
+          <h1 class="title title--big">
+            Корзина
+          </h1>
         </div>
         <CartProducts />
         <CartMisc />
@@ -30,7 +32,10 @@
           @changeAddress="changeAddress"
           @changePhone="changePhone"
         />
-        <div v-if="error" data-test="error">
+        <div
+          v-if="error"
+          data-test="error"
+        >
           {{ error }}
         </div>
       </div>
@@ -47,14 +52,19 @@
         </a>
       </div>
       <p class="footer__text">
-        Перейти к конструктору<br />чтоб собрать ещё одну пиццу
+        Перейти к конструктору<br>чтоб собрать ещё одну пиццу
       </p>
       <div class="footer__price">
         <b>Итого: {{ formattedPrice(price) }} ₽</b>
       </div>
 
       <div class="footer__submit">
-        <button type="submit" class="button">Оформить заказ</button>
+        <button
+          type="submit"
+          class="button"
+        >
+          Оформить заказ
+        </button>
       </div>
     </section>
   </form>

@@ -14,7 +14,7 @@
           height="56"
           :alt="product.name"
           data-test="product-img"
-        />
+        >
         <div class="product__text">
           <h2 data-test="product-name">
             {{ product.name }}
@@ -25,7 +25,9 @@
                 product.sizes.name + ", " + productDough(product.dough.value)
               }}
             </li>
-            <li data-test="product-sauce">Соус: {{ product.sauces.name }}</li>
+            <li data-test="product-sauce">
+              Соус: {{ product.sauces.name }}
+            </li>
             <li data-test="product-ingredients">
               Начинка: {{ productIngredients(product.ingredients) }}
             </li>
@@ -48,7 +50,7 @@
           class="counter__input"
           :value="product.qty"
           data-test="product-counter"
-        />
+        >
         <button
           type="button"
           class="counter__button counter__button--plus counter__button--orange"
@@ -59,7 +61,10 @@
         </button>
       </div>
 
-      <div class="cart-list__price" data-test="product-price">
+      <div
+        class="cart-list__price"
+        data-test="product-price"
+      >
         <b>{{ formattedPrice(product.price * product.qty) }} ₽</b>
       </div>
 

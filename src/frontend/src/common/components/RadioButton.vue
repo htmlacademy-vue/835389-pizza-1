@@ -7,12 +7,17 @@
       :checked="checked"
       class="visually-hidden"
       @change="$emit('change', input.id)"
-    />
+    >
     <template v-if="input.description">
       <b data-test="name">{{ input.name }}</b>
       <span data-test="description">{{ input.description }}</span>
     </template>
-    <span v-else data-test="name">{{ input.name }}</span>
+    <span
+      v-else
+      data-test="name"
+    >
+      {{ input.name }}
+    </span>
   </label>
 </template>
 
