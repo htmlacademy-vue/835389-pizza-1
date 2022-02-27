@@ -4,7 +4,9 @@
 
     <div class="layout__content">
       <div class="layout__title">
-        <h1 class="title title--big">Мои данные</h1>
+        <h1 class="title title--big">
+          Мои данные
+        </h1>
       </div>
 
       <div class="user">
@@ -14,7 +16,7 @@
           :alt="user.name"
           width="72"
           height="72"
-        />
+        >
         <div class="user__name">
           <span data-test="user-name">{{ user.name }}</span>
         </div>
@@ -73,7 +75,7 @@
                   name="addr-name"
                   placeholder="Введите название адреса"
                   required
-                />
+                >
               </label>
             </div>
             <div class="address-form__input address-form__input--size--normal">
@@ -85,7 +87,7 @@
                   name="addr-street"
                   placeholder="Введите название улицы"
                   required
-                />
+                >
               </label>
             </div>
             <div class="address-form__input address-form__input--size--small">
@@ -97,7 +99,7 @@
                   name="addr-house"
                   placeholder="Введите номер дома"
                   required
-                />
+                >
               </label>
             </div>
             <div class="address-form__input address-form__input--size--small">
@@ -108,7 +110,7 @@
                   type="text"
                   name="addr-apartment"
                   placeholder="Введите № квартиры"
-                />
+                >
               </label>
             </div>
             <div class="address-form__input">
@@ -119,7 +121,7 @@
                   type="text"
                   name="addr-comment"
                   placeholder="Введите комментарий"
-                />
+                >
               </label>
             </div>
           </div>
@@ -134,7 +136,11 @@
             >
               Удалить
             </button>
-            <button type="submit" class="button" data-test="submit-address">
+            <button
+              type="submit"
+              class="button"
+              data-test="submit-address"
+            >
               Сохранить
             </button>
           </div>

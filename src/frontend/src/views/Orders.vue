@@ -3,7 +3,9 @@
     <AppLayoutSidebar data-test="sidebar" />
     <div class="layout__content">
       <div class="layout__title">
-        <h1 class="title title--big">История заказов</h1>
+        <h1 class="title title--big">
+          История заказов
+        </h1>
       </div>
       <section
         v-for="order in orders"
@@ -25,14 +27,24 @@
             data-test="delete-order"
             @click="deleteOrder(order.id)"
           >
-            <button type="button" class="button button--border">Удалить</button>
+            <button
+              type="button"
+              class="button button--border"
+            >
+              Удалить
+            </button>
           </div>
           <div
             class="order__button"
             data-test="repeat-order"
             @click="repeatOrder(order)"
           >
-            <button type="button" class="button">Повторить</button>
+            <button
+              type="button"
+              class="button"
+            >
+              Повторить
+            </button>
           </div>
         </div>
 
@@ -51,7 +63,7 @@
                 height="56"
                 :alt="pizza.name"
                 data-test="product-img"
-              />
+              >
               <div class="product__text">
                 <h2 data-test="product-name">
                   {{ pizza.name }}
@@ -59,8 +71,7 @@
                 <ul>
                   <li>
                     <span data-test="product-size">
-                      {{ pizza.sizes.name }} </span
-                    >,
+                      {{ pizza.sizes.name }} </span>,
                     <span data-test="product-dough">
                       {{ productDough(pizza.dough.value) }}
                     </span>
@@ -75,7 +86,10 @@
               </div>
             </div>
 
-            <p class="order__price" data-test="product-price">
+            <p
+              class="order__price"
+              data-test="product-price"
+            >
               <template v-if="pizza.quantity > 1">
                 {{ pizza.quantity }} х
               </template>
@@ -96,7 +110,7 @@
               height="30"
               :alt="misc.name"
               data-test="misc-img"
-            />
+            >
             <p>
               <span data-test="misc-name">{{ misc.name }}</span>
               <b data-test="misc-price">

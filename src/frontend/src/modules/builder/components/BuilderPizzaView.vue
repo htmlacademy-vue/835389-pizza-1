@@ -9,7 +9,7 @@
         placeholder="Введите название пиццы"
         data-test="input-pizza-name"
         @input="changeName($event.target.value)"
-      />
+      >
     </label>
 
     <div
@@ -18,7 +18,11 @@
       @dragover.prevent
       @dragenter.prevent
     >
-      <div class="pizza" :class="pizzaClass" data-test="pizza">
+      <div
+        class="pizza"
+        :class="pizzaClass"
+        data-test="pizza"
+      >
         <div class="pizza__wrapper">
           <transition-group
             name="zoom"

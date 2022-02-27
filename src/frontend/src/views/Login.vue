@@ -1,12 +1,20 @@
 <template>
   <div class="sign-form">
-    <router-link to="/" class="close close--white">
+    <router-link
+      to="/"
+      class="close close--white"
+    >
       <span class="visually-hidden">Закрыть форму авторизации</span>
     </router-link>
     <div class="sign-form__title">
-      <h1 class="title title--small">Авторизуйтесь на сайте</h1>
+      <h1 class="title title--small">
+        Авторизуйтесь на сайте
+      </h1>
     </div>
-    <form data-test="form-login" @submit.prevent="login">
+    <form
+      data-test="form-login"
+      @submit.prevent="login"
+    >
       <div class="sign-form__input">
         <label class="input">
           <span>E-mail</span>
@@ -16,7 +24,7 @@
             type="email"
             name="email"
             placeholder="example@mail.ru"
-          />
+          >
         </label>
       </div>
 
@@ -29,10 +37,15 @@
             type="password"
             name="pass"
             placeholder="***********"
-          />
+          >
         </label>
       </div>
-      <button type="submit" class="button">Авторизоваться</button>
+      <button
+        type="submit"
+        class="button"
+      >
+        Авторизоваться
+      </button>
     </form>
   </div>
 </template>

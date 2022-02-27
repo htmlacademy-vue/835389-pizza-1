@@ -14,7 +14,7 @@
             height="60"
             :alt="el.name"
             data-test="misc-image"
-          />
+          >
           <span data-test="misc-name">{{ el.name }}</span>
         </p>
 
@@ -36,7 +36,7 @@
               :value="el.qty"
               readonly
               data-test="misc-counter"
-            />
+            >
             <button
               type="button"
               class="

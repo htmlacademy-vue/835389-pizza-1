@@ -1,7 +1,9 @@
 <template>
   <div class="content__ingredients">
     <div class="sheet">
-      <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
+      <h2 class="title title--small sheet__title">
+        Выберите ингредиенты
+      </h2>
       <div class="sheet__content ingredients">
         <div class="ingredients__sauce">
           <p>Основной соус:</p>
@@ -24,7 +26,10 @@
               :key="`ingredient-${ingredient.id}`"
               class="ingredients__item"
             >
-              <SelectorItem :item="ingredient" data-test="selector-item" />
+              <SelectorItem
+                :item="ingredient"
+                data-test="selector-item"
+              />
               <ItemCounter
                 :id="ingredient.id"
                 :count="ingredient.count"
